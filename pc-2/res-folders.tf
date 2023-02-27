@@ -40,3 +40,16 @@ module "folder_l2" {
 
   depends_on = [module.folder_l1]
 }
+
+module "folder_teams" {
+  count    = 4
+  source   = "../modules/vcenter-folder"
+
+  folder_path       = "Team-${count.index}"
+  folder_type       = "vm"
+  datacenter        = "Datacenter"
+  role_assignments  = {}
+  custom_attributes = {}
+  tags              = {}
+}
+
