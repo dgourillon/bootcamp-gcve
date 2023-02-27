@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+## NSX section
 
 variable "edge_cluster_name" {
   description = "The name of the NSX-T Edge Cluster."
@@ -98,4 +99,58 @@ variable "dfw_policies" {
     }))
   }))
   default = []
+}
+
+
+## Vcenter version
+
+variable "vsphere_server" {
+  type        = string
+  description = "The FQDN of the vSphere vCenter server"
+}
+
+variable "vsphere_user" {
+  type        = string
+  description = "The username used to connect to the vCenter server. Must be an admin user"
+}
+
+variable "vsphere_password" {
+  type        = string
+  description = "The password for the vCenter admin user"
+  sensitive   = true
+}
+
+variable "vsphere_folder_config_l1" {
+  description = "All toplevel Vsphere Folder Configs"
+
+  type = map(object({
+    datacenter        = string,
+    type              = string,
+    custom_attributes = any,
+    tags              = any,
+    role_assignments  = any,
+  }))
+  default = {}
+}
+
+variable "vsphere_folder_config_l2" {
+  description = "All level 2 Vsphere Folder Configs"
+
+  type = map(object({
+    datacenter        = string,
+    type              = string,
+    custom_attributes = any,
+    tags              = any,
+    role_assignments  = any,
+  }))
+  default = {}
+}
+
+variable "vsphere_resource_pool_config" {
+  description = "All Vsphere Resource Pool Configs"
+  type = map(object({
+    datacenter       = string,
+    location         = string,
+    role_assignments = any,
+  }))
 }
