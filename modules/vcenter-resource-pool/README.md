@@ -1,0 +1,80 @@
+# Terraform VSphere Resource Pool Module
+This module allows you to create and manage resource pools and entity permissions. Permissions can be created on an entity for a given user or group with the specified role.
+
+<!-- BEGIN_AUTOMATED_TF_DOCS_BLOCK -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_vsphere"></a> [vsphere](#requirement\_vsphere) | >= 2.0.2 |
+
+## Usage
+Basic usage of this module is as follows:
+
+```hcl
+module "example" {
+	 source  = "<module-path>"
+
+	 # Required variables
+	 datacenter  = 
+	 name  = 
+	 parent_path  = 
+
+	 # Optional variables
+	 cpu_expandable  = true
+	 cpu_limit  = -1
+	 cpu_reservation  = 0
+	 cpu_share_level  = "normal"
+	 cpu_shares  = 4
+	 memory_expandable  = true
+	 memory_limit  = -1
+	 memory_reservation  = 0
+	 memory_share_level  = "normal"
+	 memory_shares  = 500
+	 resource_pool_tags  = []
+	 role_assignments  = {}
+	 scale_descendants_shares  = "disabled"
+}
+```
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [vsphere_entity_permissions.entity_permissions](https://registry.terraform.io/providers/hashicorp/vsphere/latest/docs/resources/entity_permissions) | resource |
+| [vsphere_resource_pool.resource_pool](https://registry.terraform.io/providers/hashicorp/vsphere/latest/docs/resources/resource_pool) | resource |
+| [vsphere_compute_cluster.vsphere_compute_cluster](https://registry.terraform.io/providers/hashicorp/vsphere/latest/docs/data-sources/compute_cluster) | data source |
+| [vsphere_datacenter.vsphere_datacenter](https://registry.terraform.io/providers/hashicorp/vsphere/latest/docs/data-sources/datacenter) | data source |
+| [vsphere_host.vsphere_host](https://registry.terraform.io/providers/hashicorp/vsphere/latest/docs/data-sources/host) | data source |
+| [vsphere_resource_pool.vsphere_resource_pool](https://registry.terraform.io/providers/hashicorp/vsphere/latest/docs/data-sources/resource_pool) | data source |
+| [vsphere_role.vsphere_role](https://registry.terraform.io/providers/hashicorp/vsphere/latest/docs/data-sources/role) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_cpu_expandable"></a> [cpu\_expandable](#input\_cpu\_expandable) | Determines if the reservation on a resource pool can grow beyond the specified value if the parent resource pool has unreserved resources. | `bool` | `true` | no |
+| <a name="input_cpu_limit"></a> [cpu\_limit](#input\_cpu\_limit) | The CPU utilization of a resource pool will not exceed this limit, even if there are available resources | `number` | `-1` | no |
+| <a name="input_cpu_reservation"></a> [cpu\_reservation](#input\_cpu\_reservation) | Amount of CPU (MHz) that is guaranteed available to the resource pool | `number` | `0` | no |
+| <a name="input_cpu_share_level"></a> [cpu\_share\_level](#input\_cpu\_share\_level) | The CPU allocation level | `string` | `"normal"` | no |
+| <a name="input_cpu_shares"></a> [cpu\_shares](#input\_cpu\_shares) | The number of shares allocated for CPU. Used to determine resource allocation in case of resource contention. If this is set, cpu\_share\_level must be custom | `number` | `4` | no |
+| <a name="input_datacenter"></a> [datacenter](#input\_datacenter) | The name of the vSphere datacenter where the resource pool will be created | `string` | n/a | yes |
+| <a name="input_memory_expandable"></a> [memory\_expandable](#input\_memory\_expandable) | Determines if the reservation on a resource pool can grow beyond the specified value if the parent resource pool has unreserved resources. | `bool` | `true` | no |
+| <a name="input_memory_limit"></a> [memory\_limit](#input\_memory\_limit) | The CPU utilization of a resource pool will not exceed this limit, even if there are available resources. | `number` | `-1` | no |
+| <a name="input_memory_reservation"></a> [memory\_reservation](#input\_memory\_reservation) | Amount of CPU (MHz) that is guaranteed available to the resource pool | `number` | `0` | no |
+| <a name="input_memory_share_level"></a> [memory\_share\_level](#input\_memory\_share\_level) | The memory allocation level. | `string` | `"normal"` | no |
+| <a name="input_memory_shares"></a> [memory\_shares](#input\_memory\_shares) | The number of shares allocated for CPU. Used to determine resource allocation in case of resource contention. If this is set, memory\_share\_level must be custom | `number` | `500` | no |
+| <a name="input_name"></a> [name](#input\_name) | The name of the new resource pool | `string` | n/a | yes |
+| <a name="input_parent_path"></a> [parent\_path](#input\_parent\_path) | The inventory path to the parent of the new resource pool. Can be a cluster, host, or another resource pool.<br>Examples 'Cluster/cluster-1', 'ResourcePool/foo-resource-pool', 'Host/esxi-123456.abc12345.asia-southeast1.gve.goog' | `string` | n/a | yes |
+| <a name="input_resource_pool_tags"></a> [resource\_pool\_tags](#input\_resource\_pool\_tags) | Friendly name for the dataset being provisioned. | `list(string)` | `[]` | no |
+| <a name="input_role_assignments"></a> [role\_assignments](#input\_role\_assignments) | A map of principals and permissions to attach to the resource pool | <pre>map(object({<br>    user_or_group = string<br>    is_group      = bool<br>    propagate     = bool<br>    role          = string<br>  }))</pre> | `{}` | no |
+| <a name="input_scale_descendants_shares"></a> [scale\_descendants\_shares](#input\_scale\_descendants\_shares) | Determines if the shares of all descendants of the resource pool are scaled up or down when the shares of the resource pool are scaled up or down | `string` | `"disabled"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_vsphere_resource_pool"></a> [vsphere\_resource\_pool](#output\_vsphere\_resource\_pool) | The vsphere\_resource\_pool resource object of the created vcenter resource pool. |
+
+<!-- END_AUTOMATED_TF_DOCS_BLOCK --> 
