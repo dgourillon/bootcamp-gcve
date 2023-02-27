@@ -17,7 +17,7 @@
 
 
 module "vm_segments" {
-  source   = "../../modules/nsxt-segment/"
+  source   = "../modules/nsxt-segment/"
   for_each = { for k, v in var.segments : v.display_name => v }
 
   connectivity_path    = data.nsxt_policy_tier1_gateway.t1_gateway.path
@@ -30,7 +30,7 @@ module "vm_segments" {
 
 module "gwf_policies" {
   depends_on = [module.vm_segments]
-  source     = "../../modules/nsxt-gateway-firewall/"
+  source     = "../modules/nsxt-gateway-firewall/"
   for_each   = { for k, v in var.gwf_policies : v.display_name => v }
 
   display_name = each.value.display_name
@@ -40,7 +40,7 @@ module "gwf_policies" {
 
 module "dfw_policies" {
   depends_on = [module.vm_segments]
-  source     = "../../modules/nsxt-distributed-firewall-policy/"
+  source     = "../modules/nsxt-distributed-firewall-policy/"
   for_each   = { for k, v in var.dfw_policies : v.display_name => v }
 
   display_name    = each.value.display_name

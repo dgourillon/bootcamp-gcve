@@ -18,7 +18,7 @@
 
 
 # module "zone_nonprod" {
-#   source   = "../../modules/t1-zone/"
+#   source   = "../modules/t1-zone/"
 #   t1_name                          = "nonprod-t1-lr"
 #   edge_cluster_path                = data.nsxt_policy_edge_cluster.edge-cluster.path
 #   t0_path                          = data.nsxt_policy_tier0_gateway.tier0_gw_gateway.path
@@ -61,7 +61,7 @@
 
 
 # module "zone_prod" {
-#   source   = "../../modules/t1-zone/"
+#   source   = "../modules/t1-zone/"
 #   t1_name                          = "prod-t1-lr"
 #   edge_cluster_path                = data.nsxt_policy_edge_cluster.edge-cluster.path
 #   t0_path                          = data.nsxt_policy_tier0_gateway.tier0_gw_gateway.path
@@ -107,7 +107,7 @@
 
 module "zone_teams" {
   count                            = 4
-  source   = "../../modules/t1-zone/"
+  source   = "../modules/t1-zone/"
   t1_name                          = "t1-lr-team${count.index}"
   edge_cluster_path                = data.nsxt_policy_edge_cluster.edge-cluster.path
   t0_path                          = data.nsxt_policy_tier0_gateway.tier0_gw_gateway.path
