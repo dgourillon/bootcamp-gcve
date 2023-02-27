@@ -57,7 +57,7 @@ module "zone_teams" {
         dhcp_ranges    = ["10.129.${count.index+1}.10-10.129.${count.index+1}.100"]
         dhcp_v4_config = {
           server_address = "10.129.${count.index+1}.2/24"
-          dns_servers    = ["10.129.${count.index+1}.3"]
+          dns_servers    = ["10.129.${count.index}.3"]
         }
       }
     }
