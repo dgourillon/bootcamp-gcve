@@ -5,6 +5,7 @@
 *.tfstate
 *.tfstate.*
 terraform.tfvars
+gcve.credentials.auto.tfvars
 # Crash log files
 crash.log
 
