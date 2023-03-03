@@ -48,7 +48,13 @@ module "folder_teams" {
   folder_path       = "team${count.index}"
   folder_type       = "vm"
   datacenter        = "Datacenter"
-  role_assignments  = {}
+  "role_assignments" : {
+      "owner_permission" : {
+        "user_or_group" : "dgourillon\\\\user-team-${count.index}",
+        "is_group" : false,
+        "propagate" : true,
+        "role" : "Cloud-Owner-Role"
+      }
   custom_attributes = {}
   tags              = {}
 }
