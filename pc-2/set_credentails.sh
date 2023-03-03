@@ -22,9 +22,25 @@ NSX_URL=$(gcloud vmware private-clouds list --location=$ZONE --format="value(nsx
 NSX_USER=$(gcloud vmware private-clouds nsx credentials describe --private-cloud=$PRIVATE_CLOUD --location=$ZONE --project $PROJECT --format="value(username)")
 NSX_PWD=$(gcloud vmware private-clouds nsx credentials describe --private-cloud=$PRIVATE_CLOUD --location=$ZONE --project $PROJECT --format="value(password)")
 
-sed -i  "s/secret_vsphere_server.*/secret_vsphere_server   = \"$VCENTER_URL\"/g" $CREDENTIALS_TFVARS 
-sed -i "s/secret_vsphere_user.*/secret_vsphere_user     = \"$VCENTER_USER\"/g" $CREDENTIALS_TFVARS
-sed -i "s/secret_vsphere_password.*/secret_vsphere_password = \"$VCENTER_PWD\"/g" $CREDENTIALS_TFVARS
+
+if test -f "$CREDENTIALS_TFVARS"; then
+    echo "$CREDENTIALS_TFVARS exists."
+else
+    echo "create $CREDENTIALS_TFVARS"	
+    cp $CREDENTIALS_TFVARS.template $CREDENTIALS_TFVARS
+fi
+
+if test -f "$VM_CREATE_SCRIPT"; then
+    echo "$VM_CREATE_SCRIPT exists."
+else
+    echo "create $VM_CREATE_SCRIPT"
+    cp $VM_CREATE_SCRIPT.template $VM_CREATE_SCRIPT
+fi
+
+
+sed -i  "s/vsphere_server.*/vsphere_server   = \"$VCENTER_URL\"/g" $CREDENTIALS_TFVARS 
+sed -i "s/vsphere_user.*/vsphere_user     = \"$VCENTER_USER\"/g" $CREDENTIALS_TFVARS
+sed -i "s/vsphere_password.*/vsphere_password = \"$VCENTER_PWD\"/g" $CREDENTIALS_TFVARS
 sed -i "s/vcenter_ip_address.*/vcenter_ip_address     = \"$VCENTER_IP\"/g" $CREDENTIALS_TFVARS
 sed -i "s/nsx_manager_ip_address.*/nsx_manager_ip_address = \"$NSX_IP\"/g" $CREDENTIALS_TFVARS
 

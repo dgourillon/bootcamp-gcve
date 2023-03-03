@@ -32,6 +32,7 @@ provider "nsxt" {
   allow_unverified_ssl = false
 }
 
+
 provider "vsphere" {
   vsphere_server       = var.vsphere_server
   user                 = var.vsphere_user
