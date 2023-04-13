@@ -16,7 +16,6 @@
 
 
 
-
 module "gwf_policies" {
   depends_on = [module.vm_segments]
   source     = "../modules/nsxt-gateway-firewall/"
