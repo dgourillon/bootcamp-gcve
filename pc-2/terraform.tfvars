@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+team_count = 4
 
 // NSX-T Segments
 segments = [

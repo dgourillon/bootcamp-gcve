@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+
+variable "team_count" {
+  type        = number
+  description = "Count of teams to duplicate the resources for"
+}
+
+
 ## NSX section
 
 variable "edge_cluster_name" {

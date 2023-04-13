@@ -20,7 +20,7 @@
 
 
 module "zone_teams" {
-  count                            = 4
+  count                            = var.team_count
   source   = "../modules/t1-zone/"
   t1_name                          = "t1-lr-team${count.index}"
   edge_cluster_path                = data.nsxt_policy_edge_cluster.edge-cluster.path

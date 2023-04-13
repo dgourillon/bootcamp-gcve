@@ -42,7 +42,7 @@ module "folder_l2" {
 }
 
 module "folder_teams" {
-  count    = 4
+  count    = var.team_count
   source   = "../modules/vcenter-folder"
 
   folder_path       = "team${count.index}"

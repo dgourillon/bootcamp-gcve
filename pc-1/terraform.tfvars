@@ -16,6 +16,8 @@
 
 
 // NSX-T Segments
+team_count = 4
+
 segments = [
   {
     description  = "example-subnet1"
