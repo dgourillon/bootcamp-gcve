@@ -16,17 +16,6 @@
 
 
 
-module "vm_segments" {
-  source   = "../modules/nsxt-segment/"
-  for_each = { for k, v in var.segments : v.display_name => v }
-
-  connectivity_path    = data.nsxt_policy_tier1_gateway.t1_gateway.path
-  display_name         = each.value.display_name
-  resource_description = each.value.description
-  segment_cidr         = each.value.cidr
-  tags                 = each.value.tags
-  transport_zone_path  = data.nsxt_policy_transport_zone.overlay_tz.path
-}
 
 module "gwf_policies" {
   depends_on = [module.vm_segments]
