@@ -55,12 +55,12 @@ gwf_policies = [
       },
       {
         action             = "ALLOW"
-        destination_groups = ["10.123.2.0/23"]
+        destination_groups = ["10.0.0.0/8"]
         source_groups      = []
         direction          = "IN_OUT"
-        display_name       = "gfw-allow-dns"
+        display_name       = "gfw-allow-internal"
         logged             = false
-        services           = ["DNS"]
+        services           = ["DNS","HTTP"]
       },
     ]
   },
