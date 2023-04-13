@@ -98,12 +98,12 @@ dfw_policies = [
       },
       {
         action             = "ALLOW"
-        destination_groups = ["10.123.2.0/23"]
-        source_groups      = ["10.200.1.0-10.200.1.128"]
+        destination_groups = []
+        source_groups      = ["10.0.0.0/8"]
         direction          = "IN_OUT"
-        display_name       = "dfw-allow-dns"
+        display_name       = "dfw-allow-internal"
         logged             = false
-        services           = ["DNS"]
+        services           = ["DNS","HTTP"]
       },
       {
         action             = "ALLOW"
