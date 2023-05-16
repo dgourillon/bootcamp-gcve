@@ -62,7 +62,7 @@ resource "nsxt_policy_fixed_segment" "segments" {
 
 module "gwf_policies" {
 
-  source     = "../modules/nsxt-gateway-firewall/"
+  source     = "../nsxt-gateway-firewall/"
   for_each   = { for k, v in var.gwf_policies : v.display_name => v }
 
   display_name = each.value.display_name
