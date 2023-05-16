@@ -62,4 +62,45 @@ module "zone_teams" {
       }
     }
   }
+  gwf_policies = [
+  {
+    display_name = "gwf_allow_policy"
+    rules = [
+      {
+        action             = "ALLOW"
+        destination_groups = ["10.123.1.0/24"]
+        source_groups      = ["10.100.0.0-10.100.0.128"]
+        direction          = "IN_OUT"
+        display_name       = "gwf-allow-ssh"
+        logged             = false
+        services           = ["SSH"]
+      },
+      {
+        action             = "ALLOW"
+        destination_groups = ["10.0.0.0/8"]
+        source_groups      = []
+        direction          = "IN_OUT"
+        display_name       = "gfw-allow-internal"
+        logged             = false
+        services           = ["DNS","HTTP"]
+      },
+    ]
+  },
+  {
+    display_name    = "gwf_drop_policy"
+    sequence_number = 1000
+    rules = [
+      {
+        action             = "DROP"
+        destination_groups = ["10.123.2.0/23"]
+        source_groups      = []
+        direction          = "IN"
+        display_name       = "gfw-drop-all"
+        logged             = false
+        services           = []
+      }
+    ]
+  },
+]
+
 }
