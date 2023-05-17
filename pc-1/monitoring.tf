@@ -25,7 +25,7 @@ module "gcve-monitoring" {
   vm_mon_type             = "e2-small"
   vm_mon_zone             = "us-central1-a"
   sa_gcve_monitoring      = "sa-gcve-monitoring"
-  subnetwork              = "projects/network-target-1/regions/us-central1/subnetworks/us-central1-subnet-2"
+  subnetwork              = "us-central1-subnet-2"
   create_dashboards       = "true"
   network_project         = "network-target-1"
 }
