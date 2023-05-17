@@ -15,7 +15,7 @@
  */
 
 module "gcve-monitoring" {
-  source                  = "../../modules/gcve-monitoring"
+  source                  = "../modules/gcve-monitoring"
   gcve_region             = "us-central1"
   project                 = "gcve-dgo"
   secret_vsphere_server   = var.vsphere_server
@@ -25,7 +25,8 @@ module "gcve-monitoring" {
   vm_mon_type             = "e2-small"
   vm_mon_zone             = "us-central1-a"
   sa_gcve_monitoring      = "sa-gcve-monitoring"
-  subnetwork              = "sa-gcve-monitoring"
+  subnetwork              = "projects/network-target-1/regions/us-central1/subnetworks/us-central1-subnet-2"
   create_dashboards       = "true"
+  network_project         = "network-target-1"
 }
 
