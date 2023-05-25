@@ -21,7 +21,7 @@
 
 module "zone_teams" {
   count                            = 4
-  source   = "../modules/t1-zone/"
+  source   = "../modules/t1-dhcp-zone/"
   t1_name                          = "t1-lr-team${count.index}"
   edge_cluster_path                = data.nsxt_policy_edge_cluster.edge-cluster.path
   t0_path                          = data.nsxt_policy_tier0_gateway.tier0_gw_gateway.path
@@ -104,3 +104,5 @@ module "zone_teams" {
 ]
 
 }
+
+
