@@ -28,13 +28,6 @@ resource "nsxt_policy_tier1_gateway" "t1_router" {
   route_advertisement_types = var.t1_route_advertisement_types
   pool_allocation           = var.t1_pool_allocation
 
-  route_advertisement_rule {
-    name                      = "allow_connected_subnets"
-    action                    = "PERMIT"
-    subnets                   = var.advertised_subnet_list
-    prefix_operator           = "EQ"
-    route_advertisement_types = ["TIER1_CONNECTED"]
-  }
 
   route_advertisement_rule {
     name                      = "deny_all"
