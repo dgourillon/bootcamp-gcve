@@ -36,7 +36,7 @@ module "zone_teams" {
   dhcp_path                    = nsxt_policy_dhcp_server.tier_dhcp.path
   overlay_tz_path              = data.nsxt_policy_transport_zone.overlay_tz.path
   default_dns_forwarding_ip    = "10.149.0.3"
-  advertised_subnet_list       = ["10.129.${count.index}.1/24"]
+  advertised_subnet_list       = ["10.129.${count.index}.0/24"]
   segments = {
     prod-frontend-segment = {
       display_name = "team${count.index}-frontend-segment"
