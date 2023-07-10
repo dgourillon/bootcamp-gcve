@@ -32,7 +32,7 @@ resource "nsxt_policy_tier1_gateway" "t1_router" {
     name                      = "allow_connected_subnets"
     action                    = "PERMIT"
     subnets                   = var.advertised_subnet_list
-    prefix_operator           = "GE"
+    prefix_operator           = "EQ"
     route_advertisement_types = ["TIER1_CONNECTED"]
   }
 
@@ -40,7 +40,7 @@ resource "nsxt_policy_tier1_gateway" "t1_router" {
     name                      = "deny_all"
     action                    = "DENY"
     subnets                   = ["0.0.0.0/0"]
-    prefix_operator           = "DN"
+    prefix_operator           = "GE"
     route_advertisement_types = ["TIER1_CONNECTED"]
   }
 
