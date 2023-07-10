@@ -41,6 +41,7 @@ module "zone_teams" {
     prod-frontend-segment = {
       display_name = "team${count.index}-frontend-segment"
       description  = "frontend segment for team ${count.index}"
+      connectivity = "ON"
       subnet = {
         cidr        = "10.129.${count.index}.1/24"
         dhcp_ranges = ["10.129.${count.index}.10-10.129.${count.index}.100"]
@@ -53,6 +54,7 @@ module "zone_teams" {
     prod-backend-segment = {
       display_name = "team${count.index}-backend-segment"
       description  = "backend segment for team ${count.index}"
+      connectivity = "ON"
       subnet = {
         cidr        = "10.129.${count.index + 1}.1/24"
         dhcp_ranges = ["10.129.${count.index + 1}.10-10.129.${count.index + 1}.100"]
