@@ -28,6 +28,15 @@ resource "nsxt_policy_tier1_gateway" "t1_router" {
   route_advertisement_types = var.t1_route_advertisement_types
   pool_allocation           = var.t1_pool_allocation
 
+  route_advertisement_rule {
+    name                      = "allow_connected_subnets"
+    action                    = "ALLOW"
+    subnets                   = var.advertised_subnet_list
+    prefix_operator           = "GE"
+    route_advertisement_types = ["TIER1_CONNECTED"]
+  }
+
+
 }
 
 resource "nsxt_policy_gateway_dns_forwarder" "default_dns_forwarder" {
@@ -57,14 +66,6 @@ resource "nsxt_policy_fixed_segment" "segments" {
       server_address = each.value.subnet.dhcp_v4_config.server_address
     }
   }
-  route_advertisement_rule {
-    name                      = "allow_connected_subnets"
-    action                    = "ALLOW"
-    subnets                   = var.advertised_subnet_list
-    prefix_operator           = "GE"
-    route_advertisement_types = ["TIER1_CONNECTED"]
-  }
-
 }
 
 module "gwf_policies" {
