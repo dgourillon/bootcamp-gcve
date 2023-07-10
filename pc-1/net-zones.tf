@@ -54,13 +54,13 @@ module "zone_teams" {
     prod-backend-segment = {
       display_name = "team${count.index}-backend-segment"
       description  = "backend segment for team ${count.index}"
-      connectivity = "ON"
+      connectivity = "OFF"
       subnet = {
-        cidr        = "10.129.${count.index + 1}.1/24"
-        dhcp_ranges = ["10.129.${count.index + 1}.10-10.129.${count.index + 1}.100"]
+        cidr        = "10.130.${count.index + 1}.1/24"
+        dhcp_ranges = ["10.130.${count.index + 1}.10-10.130.${count.index + 1}.100"]
         dhcp_v4_config = {
-          server_address = "10.129.${count.index + 1}.2/24"
-          dns_servers    = ["10.129.${count.index}.3"]
+          server_address = "10.130.${count.index + 1}.2/24"
+          dns_servers    = ["10.130.${count.index}.3"]
         }
       }
     }
