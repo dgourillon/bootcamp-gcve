@@ -75,7 +75,7 @@ resource "nsxt_policy_fixed_segment" "segments" {
     }
   }
   advanced_config {
-    connectivity = each.value.subnet.connectivity
+    connectivity = each.value.connectivity
   }
 }
 
