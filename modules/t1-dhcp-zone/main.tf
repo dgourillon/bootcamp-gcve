@@ -30,7 +30,7 @@ resource "nsxt_policy_tier1_gateway" "t1_router" {
 
   route_advertisement_rule {
     name                      = "allow_connected_subnets"
-    action                    = "ALLOW"
+    action                    = "PERMIT"
     subnets                   = var.advertised_subnet_list
     prefix_operator           = "GE"
     route_advertisement_types = ["TIER1_CONNECTED"]
