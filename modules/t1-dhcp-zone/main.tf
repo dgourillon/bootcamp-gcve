@@ -73,9 +73,9 @@ resource "nsxt_policy_fixed_segment" "segments" {
       dns_servers    = each.value.subnet.dhcp_v4_config.dns_servers
       server_address = each.value.subnet.dhcp_v4_config.server_address
     }
-    advanced_config {
-      connectivity = each.value.subnet.connectivity
-    }
+  }
+  advanced_config {
+    connectivity = each.value.subnet.connectivity
   }
 }
 
