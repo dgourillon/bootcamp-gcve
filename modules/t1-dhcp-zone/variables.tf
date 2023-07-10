@@ -17,7 +17,7 @@
 variable "t1_name" {
   description = "Value for the T1 LR name"
   type        = string
-  
+
 }
 
 variable "edge_cluster_path" {
@@ -47,7 +47,7 @@ variable "t1_default_rule_logging" {
   type        = string
   default     = "false"
 }
-           
+
 
 variable "t1_enable_firewall" {
   description = "Value for the T1 LR enable_firewall"
@@ -121,4 +121,10 @@ variable "gwf_policies" {
     }))
   }))
   default = []
+}
+
+variable "advertised_subnet_list" {
+  description = "list of subnets for route_advertisement_rule paremeter of T1"
+  type        = list(string)
+  default     = ["TIER1_CONNECTED"]
 }
