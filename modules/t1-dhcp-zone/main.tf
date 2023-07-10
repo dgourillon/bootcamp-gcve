@@ -36,6 +36,14 @@ resource "nsxt_policy_tier1_gateway" "t1_router" {
     route_advertisement_types = ["TIER1_CONNECTED"]
   }
 
+  route_advertisement_rule {
+    name                      = "deny_all"
+    action                    = "DENY"
+    subnets                   = ["0.0.0.0/0"]
+    prefix_operator           = "DN"
+    route_advertisement_types = ["TIER1_CONNECTED"]
+  }
+
 
 }
 
