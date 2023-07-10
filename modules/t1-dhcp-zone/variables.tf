@@ -126,5 +126,5 @@ variable "gwf_policies" {
 variable "advertised_subnet_list" {
   description = "list of subnets for route_advertisement_rule paremeter of T1"
   type        = list(string)
-  default     = ["TIER1_CONNECTED"]
+  default     = []
 }
