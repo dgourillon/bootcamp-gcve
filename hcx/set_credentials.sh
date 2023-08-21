@@ -15,3 +15,4 @@ HCX_URL=$(gcloud vmware private-clouds list --location=$ZONE --format="value(hcx
 
 sed -i  "s/VCENTER_URL/$VCENTER_URL/g" hcx.ps1
 sed -i  "s/VCENTER_PWD/$VCENTER_PWD/g" hcx.ps1
+sed -i  "s/HCX_URL/$HCX_URL/g" hcx.ps1
