@@ -13,6 +13,8 @@ VCENTER_PWD=$(gcloud vmware private-clouds vcenter credentials describe --privat
 
 HCX_URL=$(gcloud vmware private-clouds list --location=$ZONE --format="value(hcx.fqdn)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT )
 
+mv hcx.ps1.template hcx.ps1
+
 sed -i  "s/VCENTER_URL_PC1/$VCENTER_URL/g" hcx.ps1
 sed -i  "s/VCENTER_PWD_PC1/$VCENTER_PWD/g" hcx.ps1
 sed -i  "s/HCX_URL_PC1/$HCX_URL/g" hcx.ps1
