@@ -84,7 +84,7 @@ cat >> $OVA_NAME.json <<EOF
 EOF
 
 
-govc import.ova -ds /Datacenter/datastore/vsanDatastore -pool  --options=$OVA_NAME.json $OVA_NAME.ova
+govc import.ova -ds /Datacenter/datastore/vsanDatastore -pool my-management-cluster/Resources --options=$OVA_NAME.json $OVA_NAME.ova
 
 }
 
