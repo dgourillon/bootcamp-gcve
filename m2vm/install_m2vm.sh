@@ -16,6 +16,7 @@ install_m2vm () {
 ## Download and create the M4C connector
 
 # Download the connector
+rm migrate-connector.*
 OVA_URL=$(curl https://cloud.google.com/migrate/virtual-machines/docs/5.0/how-to/migrate-connector | grep -Eo 'https://storage.googleapis.com/vmmigration-public-artifacts/[^ >]+' | grep ova | tr -d "\"")
 wget $OVA_URL
 OVA_NAME=$(ls migrate-connector-* | awk -F '.' '{print $1}')
