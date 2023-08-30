@@ -96,4 +96,4 @@ PROJECT="gcve-dgo"
 
 
 install_m2vm "pc-1" "us-central1-a" "gcve-dgo"
-install_m2vm "pc-2" "us-central1-a" "gcve-dgo"
+install_m2vm "pc-2" "us-west2-a" "gcve-dgo"
