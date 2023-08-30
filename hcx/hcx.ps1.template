@@ -19,6 +19,16 @@ $hcxComputeClusterName = "my-management-cluster"
 $hcxDatastoreName = "vsanDatastore"
 $hcxVDSName = "Datacenter-dvs"
 
+
+$HcxDstSite = (Get-HCXSite -Destination)
+$hcxComputeCluster = Get-HCXApplianceCompute -ClusterComputeResource -Name $hcxComputeClusterName
+$hcxDatastore = Get-HCXApplianceDatastore -Compute $hcxComputeCluster -Name $HcxDatastoreName
+$hcxVDS = Get-HCXInventoryDVS -Compute $hcxComputeCluster -Name $hcxVDSName
+
+$hcxLocalComputeProfile = Get-HCXComputeProfile -Name $hcxComputeProfileName
+$hcxRemoteComputeProfile = Get-HCXComputeProfile -Site $HcxDstSite
+$hcxMgmtNetworkProfile = Get-HCXNetworkProfile -Name $hcxManagementNetworkProfileName
+
 New-HCXServiceMesh -Name $hcxServiceMeshName  `
 -SourceComputeProfile $hcxLocalComputeProfile  `
 -Destination $HcxDstSite  `
