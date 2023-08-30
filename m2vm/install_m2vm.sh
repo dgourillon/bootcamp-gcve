@@ -87,6 +87,7 @@ EOF
 
 govc import.ova -ds /Datacenter/datastore/vsanDatastore -pool my-management-cluster/Resources --options=$OVA_NAME.json $OVA_NAME.ova
 rm migrate-connector.*
+M4CE_IP=$(govc vm.ip $OVA_NAME)
 }
 
 
