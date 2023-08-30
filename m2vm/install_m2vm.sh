@@ -1,6 +1,5 @@
 
 install_m2vm () {
-   echo "This is the first function speaking..."
    PRIVATE_CLOUD=$1
    ZONE=$2
    PROJECT=$3
