@@ -67,7 +67,8 @@ module "zone_teams" {
   }
   gwf_policies = [
     {
-      display_name = "gwf_allow_policy"
+      display_name    = "gwf_allow_policy"
+      sequence_number = 100
       rules = [
         {
           action             = "ALLOW"
