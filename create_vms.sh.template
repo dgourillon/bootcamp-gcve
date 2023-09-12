@@ -25,6 +25,7 @@ for current_ovf in $(gsutil ls gs://$OVF_bucket/  | awk -F '/' '{print $4}' | gr
             NETWORK=$(govc ls /Datacenter/network | grep $TEAM | shuf -n 1 | awk -F '/' '{print $NF}')
             sed  -i "s/            \"Network.*/            \"Network\": \"$NETWORK\"/g" $current_ovf.json 
             #cat $current_ovf.json
+            sed 's/PowerOn": false/PowerOn": true/g' $current_ovf.json
             govc import.ovf --options=$current_ovf.json -folder=$TEAM $current_ovf.ovf
         done
         rm $current_ovf*
