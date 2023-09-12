@@ -80,12 +80,12 @@ module "zone_teams" {
         },
         {
           action             = "ALLOW"
-          destination_groups = ["10.0.0.0/8"]
+          destination_groups = []
           source_groups      = []
-          direction          = "IN_OUT"
-          display_name       = "gfw-allow-internal"
+          direction          = "OUT"
+          display_name       = "gfw-allow-egress"
           logged             = false
-          services           = ["DNS", "HTTP"]
+          services           = []
         },
       ]
     },
