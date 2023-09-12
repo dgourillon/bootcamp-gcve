@@ -75,9 +75,9 @@ module "zone_teams" {
           destination_groups = []
           source_groups      = ["10.0.0.0/8"]
           direction          = "IN_OUT"
-          display_name       = "gwf-allow-rdp"
+          display_name       = "gwf-allow-internal"
           logged             = false
-          services           = ["SSH", "RDP"]
+          services           = []
         },
         {
           action             = "ALLOW"
