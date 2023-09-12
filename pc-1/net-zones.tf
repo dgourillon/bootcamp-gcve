@@ -35,7 +35,7 @@ module "zone_teams" {
   default_gcve_dns_forwarder   = nsxt_policy_dns_forwarder_zone.defaultgcve.path
   dhcp_path                    = nsxt_policy_dhcp_server.tier_dhcp.path
   overlay_tz_path              = data.nsxt_policy_transport_zone.overlay_tz.path
-  default_dns_forwarding_ip    = "10.149.0.${count.index}"
+  default_dns_forwarding_ip    = "10.129.${count.index}.3"
   advertised_subnet_list       = ["10.129.${count.index}.0/25", "10.129.${count.index}.128/25"]
   segments = {
     prod-frontend-segment = {
@@ -47,7 +47,7 @@ module "zone_teams" {
         dhcp_ranges = ["10.129.${count.index}.10-10.129.${count.index}.100"]
         dhcp_v4_config = {
           server_address = "10.129.${count.index}.2/25"
-          dns_servers    = ["10.149.0.${count.index}"]
+          dns_servers    = ["10.129.${count.index}.3"]
         }
       }
     },
@@ -60,7 +60,7 @@ module "zone_teams" {
         dhcp_ranges = ["10.129.${count.index}.140-10.129.${count.index}.200"]
         dhcp_v4_config = {
           server_address = "10.129.${count.index}.130/25"
-          dns_servers    = ["10.149.0.${count.index}"]
+          dns_servers    = ["10.129.${count.index}.3"]
         }
       }
     }
