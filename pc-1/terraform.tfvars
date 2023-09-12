@@ -76,11 +76,11 @@ dfw_policies = [
       {
         action             = "ALLOW"
         destination_groups = []
-        source_groups      = ["10.0.0.0/8"]
-        direction          = "IN_OUT"
-        display_name       = "dfw-allow-internal"
+        source_groups      = []
+        direction          = "OUT"
+        display_name       = "dfw-allow-egress"
         logged             = false
-        services           = ["DNS", "HTTP"]
+        services           = []
       },
       {
         action             = "ALLOW"
