@@ -109,7 +109,8 @@ variable "segments" {
 variable "gwf_policies" {
   description = "A list of firewall configuration objects used to add firewall rules to the Tier1 Gateway."
   type = list(object({
-    display_name = string
+    display_name    = string
+    sequence_number = number
     rules = list(object({
       display_name       = string
       action             = string

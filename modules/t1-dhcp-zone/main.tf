@@ -81,10 +81,10 @@ resource "nsxt_policy_fixed_segment" "segments" {
 
 module "gwf_policies" {
 
-  source   = "../nsxt-gateway-firewall/"
-  for_each = { for k, v in var.gwf_policies : v.display_name => v }
-
-  display_name = each.value.display_name
-  rules        = each.value.rules
-  scope_path   = nsxt_policy_tier1_gateway.t1_router.path
+  source          = "../nsxt-gateway-firewall/"
+  for_each        = { for k, v in var.gwf_policies : v.display_name => v }
+  sequence_number = var.sequence_number
+  display_name    = each.value.display_name
+  rules           = each.value.rules
+  scope_path      = nsxt_policy_tier1_gateway.t1_router.path
 }
