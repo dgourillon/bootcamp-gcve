@@ -4,7 +4,6 @@ export GOVC_USERNAME=azerty
 export GOVC_PASSWORD=azazazaza
 export GOVC_INSECURE=true
 
-
 OVF_bucket=psolab-ovas-dgo
 
 
@@ -31,4 +30,14 @@ for current_ovf in $(gsutil ls gs://$OVF_bucket/  | awk -F '/' '{print $4}' | gr
         rm $current_ovf*
     
 
+done
+
+
+for WINDOWS_VM in $(govc ls /Datacenter/vm/*/ | grep win) 
+do 
+    echo "post boot script on $WINDOWS_VM"
+    govc guest.run -vm $WINDOWS_VM -l Administrator:ps0lab! "slmgr.vbs //b -rearm"
+    govc guest.run -vm $WINDOWS_VM -l Administrator:ps0lab! "netsh advfirewall set allprofiles state off"
+    govc guest.run -vm $WINDOWS_VM -l Administrator:ps0lab! "Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0"
+    
 done
