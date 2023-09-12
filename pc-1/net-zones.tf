@@ -57,7 +57,7 @@ module "zone_teams" {
       connectivity = "ON"
       subnet = {
         cidr        = "10.129.${count.index}.129/25"
-        dhcp_ranges = ["10.130.${count.index}.140-10.130.${count.index + 1}.200"]
+        dhcp_ranges = ["10.129.${count.index}.140-10.129.${count.index + 1}.200"]
         dhcp_v4_config = {
           server_address = "10.129.${count.index}.130/25"
           dns_servers    = ["10.149.0.3"]
