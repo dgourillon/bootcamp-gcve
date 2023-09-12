@@ -43,24 +43,24 @@ module "zone_teams" {
       description  = "frontend segment for team ${count.index}"
       connectivity = "ON"
       subnet = {
-        cidr        = "10.129.${count.index}.1/24"
+        cidr        = "10.129.${count.index}.1/25"
         dhcp_ranges = ["10.129.${count.index}.10-10.129.${count.index}.100"]
         dhcp_v4_config = {
-          server_address = "10.129.${count.index}.2/24"
-          dns_servers    = ["10.129.${count.index}.3"]
+          server_address = "10.129.${count.index}.2/25"
+          dns_servers    = ["10.149.0.3"]
         }
       }
     },
     prod-backend-segment = {
       display_name = "team${count.index}-backend-segment"
       description  = "backend segment for team ${count.index}"
-      connectivity = "OFF"
+      connectivity = "ON"
       subnet = {
-        cidr        = "10.130.${count.index + 1}.1/24"
-        dhcp_ranges = ["10.130.${count.index + 1}.10-10.130.${count.index + 1}.100"]
+        cidr        = "10.129.${count.index}.129/25"
+        dhcp_ranges = ["10.130.${count.index}.140-10.130.${count.index + 1}.200"]
         dhcp_v4_config = {
-          server_address = "10.130.${count.index + 1}.2/24"
-          dns_servers    = ["10.130.${count.index}.3"]
+          server_address = "10.129.${count.index}.130/25"
+          dns_servers    = ["10.149.0.3"]
         }
       }
     }
@@ -71,12 +71,12 @@ module "zone_teams" {
       rules = [
         {
           action             = "ALLOW"
-          destination_groups = ["10.123.1.0/24"]
-          source_groups      = ["10.100.0.0-10.100.0.128"]
+          destination_groups = []
+          source_groups      = ["10.0.0.0/8"]
           direction          = "IN_OUT"
-          display_name       = "gwf-allow-ssh"
+          display_name       = "gwf-allow-rdp"
           logged             = false
-          services           = ["SSH"]
+          services           = ["SSH", "RDP"]
         },
         {
           action             = "ALLOW"

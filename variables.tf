@@ -53,6 +53,7 @@ variable "segments" {
     cidr         = string
     tags         = map(string)
   }))
+  default = []
 }
 
 variable "transport_zone_name" {

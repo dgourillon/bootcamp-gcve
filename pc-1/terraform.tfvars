@@ -46,39 +46,16 @@ gwf_policies = [
     rules = [
       {
         action             = "ALLOW"
-        destination_groups = ["10.123.1.0/24"]
-        source_groups      = ["10.100.0.0-10.100.0.128"]
-        direction          = "IN_OUT"
-        display_name       = "gwf-allow-ssh"
-        logged             = false
-        services           = ["SSH"]
-      },
-      {
-        action             = "ALLOW"
-        destination_groups = ["10.0.0.0/8"]
+        destination_groups = []
         source_groups      = []
         direction          = "IN_OUT"
-        display_name       = "gfw-allow-internal"
-        logged             = false
-        services           = ["DNS","HTTP"]
-      },
-    ]
-  },
-  {
-    display_name    = "gwf_drop_policy"
-    sequence_number = 1000
-    rules = [
-      {
-        action             = "DROP"
-        destination_groups = ["10.123.2.0/23"]
-        source_groups      = []
-        direction          = "IN"
-        display_name       = "gfw-drop-all"
+        display_name       = "gfw-allow-all"
         logged             = false
         services           = []
-      }
+      },
     ]
   },
+
 ]
 
 // NSX-T distributed firewall
@@ -94,7 +71,7 @@ dfw_policies = [
         direction          = "IN_OUT"
         display_name       = "dfw-allow-ssh"
         logged             = false
-        services           = ["SSH"]
+        services           = ["SSH", "RDP"]
       },
       {
         action             = "ALLOW"
@@ -103,7 +80,7 @@ dfw_policies = [
         direction          = "IN_OUT"
         display_name       = "dfw-allow-internal"
         logged             = false
-        services           = ["DNS","HTTP"]
+        services           = ["DNS", "HTTP"]
       },
       {
         action             = "ALLOW"
@@ -112,7 +89,7 @@ dfw_policies = [
         direction          = "IN_OUT"
         display_name       = "dfw-allow-dhcp"
         logged             = false
-        services           = ["DHCP-Client","DHCP-Server"]
+        services           = ["DHCP-Client", "DHCP-Server"]
       }
     ]
   },
@@ -186,7 +163,7 @@ vsphere_folder_config_l1 = {
     "role_assignments" : {
     }
   }
-} 
+}
 
 vsphere_folder_config_l2 = {
   "DEV/App 1" = {
