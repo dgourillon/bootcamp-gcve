@@ -35,18 +35,18 @@ module "zone_teams" {
   default_gcve_dns_forwarder   = nsxt_policy_dns_forwarder_zone.defaultgcve.path
   dhcp_path                    = nsxt_policy_dhcp_server.tier_dhcp.path
   overlay_tz_path              = data.nsxt_policy_transport_zone.overlay_tz.path
-  default_dns_forwarding_ip    = "10.149.0.3"
-  advertised_subnet_list       = ["10.129.${count.index}.0/24"]
+  default_dns_forwarding_ip    = "10.129.${count.index}.3"
+  advertised_subnet_list       = ["10.129.${count.index}.0/25", "10.129.${count.index}.128/25"]
   segments = {
     prod-frontend-segment = {
       display_name = "team${count.index}-frontend-segment"
       description  = "frontend segment for team ${count.index}"
       connectivity = "ON"
       subnet = {
-        cidr        = "10.129.${count.index}.1/24"
+        cidr        = "10.129.${count.index}.1/25"
         dhcp_ranges = ["10.129.${count.index}.10-10.129.${count.index}.100"]
         dhcp_v4_config = {
-          server_address = "10.129.${count.index}.2/24"
+          server_address = "10.129.${count.index}.2/25"
           dns_servers    = ["10.129.${count.index}.3"]
         }
       }
@@ -54,38 +54,39 @@ module "zone_teams" {
     prod-backend-segment = {
       display_name = "team${count.index}-backend-segment"
       description  = "backend segment for team ${count.index}"
-      connectivity = "OFF"
+      connectivity = "ON"
       subnet = {
-        cidr        = "10.130.${count.index + 1}.1/24"
-        dhcp_ranges = ["10.130.${count.index + 1}.10-10.130.${count.index + 1}.100"]
+        cidr        = "10.129.${count.index}.129/25"
+        dhcp_ranges = ["10.129.${count.index}.140-10.129.${count.index}.200"]
         dhcp_v4_config = {
-          server_address = "10.130.${count.index + 1}.2/24"
-          dns_servers    = ["10.130.${count.index}.3"]
+          server_address = "10.129.${count.index}.130/25"
+          dns_servers    = ["10.129.${count.index}.3"]
         }
       }
     }
   }
   gwf_policies = [
     {
-      display_name = "gwf_allow_policy"
+      display_name    = "gwf_allow_policy"
+      sequence_number = 100
       rules = [
         {
           action             = "ALLOW"
-          destination_groups = ["10.123.1.0/24"]
-          source_groups      = ["10.100.0.0-10.100.0.128"]
+          destination_groups = []
+          source_groups      = ["10.0.0.0/8"]
           direction          = "IN_OUT"
-          display_name       = "gwf-allow-ssh"
+          display_name       = "gwf-allow-internal"
           logged             = false
-          services           = ["SSH"]
+          services           = []
         },
         {
           action             = "ALLOW"
-          destination_groups = ["10.0.0.0/8"]
+          destination_groups = []
           source_groups      = []
-          direction          = "IN_OUT"
-          display_name       = "gfw-allow-internal"
+          direction          = "OUT"
+          display_name       = "gfw-allow-egress"
           logged             = false
-          services           = ["DNS", "HTTP"]
+          services           = []
         },
       ]
     },
