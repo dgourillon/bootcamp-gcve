@@ -113,12 +113,11 @@ module "zone_teams" {
 
 
 module "zone_teams_demo" {
-  count                        = var.team_count
   source                       = "../modules/t1-dhcp-zone/"
-  t1_name                      = "t1-lr-team-demo${count.index}"
+  t1_name                      = "t1-lr-team-demo0"
   edge_cluster_path            = data.nsxt_policy_edge_cluster.edge-cluster.path
   t0_path                      = data.nsxt_policy_tier0_gateway.tier0_gw_gateway.path
-  t1_description               = "L1 Logical router for vmug ${count.index}"
+  t1_description               = "L1 Logical router for vmug 0"
   t1_failover_mode             = "PREEMPTIVE"
   t1_default_rule_logging      = "false"
   t1_enable_firewall           = "true"
@@ -128,32 +127,32 @@ module "zone_teams_demo" {
   default_gcve_dns_forwarder   = nsxt_policy_dns_forwarder_zone.defaultgcve.path
   dhcp_path                    = nsxt_policy_dhcp_server.tier_dhcp.path
   overlay_tz_path              = data.nsxt_policy_transport_zone.overlay_tz.path
-  default_dns_forwarding_ip    = "10.140.${count.index}.3"
-  advertised_subnet_list       = ["10.140.${count.index}.0/25", "10.140.${count.index}.128/25"]
+  default_dns_forwarding_ip    = "10.140.0.3"
+  advertised_subnet_list       = ["10.140.0.0/25", "10.140.0.128/25"]
   segments = {
     prod-frontend-segment = {
-      display_name = "team${count.index}-frontend-segment-vmug"
-      description  = "vmug frontend segment for team ${count.index}"
+      display_name = "team0-frontend-segment-vmug"
+      description  = "vmug frontend segment for team 0"
       connectivity = "ON"
       subnet = {
-        cidr        = "10.140.${count.index}.1/25"
-        dhcp_ranges = ["10.140.${count.index}.10-10.140.${count.index}.100"]
+        cidr        = "10.140.0.1/25"
+        dhcp_ranges = ["10.140.0.10-10.140.0.100"]
         dhcp_v4_config = {
-          server_address = "10.140.${count.index}.2/25"
-          dns_servers    = ["10.140.${count.index}.3"]
+          server_address = "10.140.0.2/25"
+          dns_servers    = ["10.140.0.3"]
         }
       }
     },
     prod-backend-segment = {
-      display_name = "team${count.index}-backend-segment-vmug"
-      description  = "vmug backend segment for team ${count.index}"
+      display_name = "team0-backend-segment-vmug"
+      description  = "vmug backend segment for team 0"
       connectivity = "ON"
       subnet = {
-        cidr        = "10.140.${count.index}.140/25"
-        dhcp_ranges = ["10.140.${count.index}.140-10.140.${count.index}.200"]
+        cidr        = "10.140.0.140/25"
+        dhcp_ranges = ["10.140.0.140-10.140.0.200"]
         dhcp_v4_config = {
-          server_address = "10.140.${count.index}.130/25"
-          dns_servers    = ["10.140.${count.index}.3"]
+          server_address = "10.140.0.130/25"
+          dns_servers    = ["10.140.0.3"]
         }
       }
     }
