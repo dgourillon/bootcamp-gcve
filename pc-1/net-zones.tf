@@ -149,7 +149,7 @@ module "zone_teams_demo" {
       connectivity = "ON"
       subnet = {
         cidr        = "10.140.0.140/25"
-        dhcp_ranges = ["10.140.0.140-10.140.0.200"]
+        dhcp_ranges = ["10.140.0.140-10.140.0.180"]
         dhcp_v4_config = {
           server_address = "10.140.0.130/25"
           dns_servers    = ["10.140.0.3"]
