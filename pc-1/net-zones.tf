@@ -156,6 +156,19 @@ module "zone_teams_demo" {
         }
       }
     }
+    test-segment = {
+      display_name = "live-test"
+      description  = "vmug backend segment for team 0 done live"
+      connectivity = "ON"
+      subnet = {
+        cidr        = "10.141.0.129/25"
+        dhcp_ranges = ["10.141.0.140-10.141.0.180"]
+        dhcp_v4_config = {
+          server_address = "10.141.0.130/25"
+          dns_servers    = ["10.141.0.3"]
+        }
+      }
+    }
   }
   gwf_policies = [
     {
