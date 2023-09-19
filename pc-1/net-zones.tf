@@ -148,7 +148,7 @@ module "zone_teams_demo" {
       description  = "vmug backend segment for team 0"
       connectivity = "ON"
       subnet = {
-        cidr        = "10.140.0.140/25"
+        cidr        = "10.140.0.129/25"
         dhcp_ranges = ["10.140.0.140-10.140.0.180"]
         dhcp_v4_config = {
           server_address = "10.140.0.130/25"
