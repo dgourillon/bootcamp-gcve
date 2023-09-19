@@ -13,7 +13,7 @@ New-HCXSitePairing -Password $SecureString -Url HCX_URL_PC2 -Username  'CloudOwn
 
 $hcxServiceMeshName = "HCX-ServiceMesh"
 $hcxComputeProfileName = "GCVE Compute Profile"
-$hcxManagementNetworkProfileName = "GCVE MGMT Network Profile"
+$hcxManagementNetworkProfileName = "GCVE Uplink Network Profile"
 $hcxManagementNetworkBackingName = "HCX-MGMT"
 $hcxComputeClusterName = "my-management-cluster"
 $hcxDatastoreName = "vsanDatastore"
@@ -35,3 +35,17 @@ New-HCXServiceMesh -Name $hcxServiceMeshName  `
 -DestinationComputeProfile $hcxRemoteComputeProfile  `
 -Service BulkMigration,Interconnect,Vmotion,WANOptimization,NetworkExtension  `
 -SourceUplinkNetworkProfile $hcxMgmtNetworkProfile
+
+$hcxAppliance = (Get-HCXAppliance -Type l2concentrator | Get-Random)
+$hcxGateway = (Get-HCXGateway -DestinationSite  $HcxDstSite -Name t1-lr-team0)
+$hcxNetwork = (Get-HCXNetwork -name team0-frontend-segment)
+
+New-HCXNetworkExtension -Appliance  $hcxAppliance  `
+-DestinationGateway  $hcxGateway  `
+-DestinationSite  $HcxDstSite  `
+-GatewayIp  10.129.0.1  `
+-Netmask  255.255.255.128  `
+-Network  $hcxNetwork  `
+-SourceSite  (Get-HCXSite)  `
+-EgressOptimization  $true  `
+-ProximityRouting  $true  
