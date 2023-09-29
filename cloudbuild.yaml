@@ -16,14 +16,16 @@
 steps:
 
   # Entrypoint, timeout and environment variables
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  - id: 'test-step'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'gcloud'
     timeout: 240s
     args: ['compute', 'instances', 'list']
     env:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  - id: 'build-private-clouds'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: '/bin/sh create_pcs.sh'
     dir: 'pcs'
     timeout: 240s
