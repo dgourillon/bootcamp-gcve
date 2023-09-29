@@ -26,8 +26,11 @@ steps:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   - id: 'build-private-clouds'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: '/bin/sh create_pcs.sh'
     dir: 'pcs'
     timeout: 240s
+    script: |
+    #!/usr/bin/env bash
+    ./create_pcs.sh'
+    
  
 # [END cloudbuild_basic_config]
