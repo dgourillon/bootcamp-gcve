@@ -28,9 +28,8 @@ steps:
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     dir: 'pcs'
     timeout: 240s
-    script: |
-    #!/usr/bin/env bash
-    ./create_pcs.sh'
-    
- 
+    entrypoint: 'bash'
+    args: ['create_pcs.sh']
+
+  
 # [END cloudbuild_basic_config]
