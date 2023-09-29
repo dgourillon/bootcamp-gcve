@@ -1,17 +1,31 @@
-gcloud vmware private-clouds create pc-1 \
---location=us-central1-a \
---project=gcve-dgo \
---type=TIME_LIMITED \
---cluster=nprd-ll01 \
---node-type-config=type=standard-72,count=1 \
---management-range=10.170.0.0/20 \
---vmware-engine-network=us-central1-default
 
-gcloud vmware private-clouds create pc-2 \
---location=us-west2-a \
---project=gcve-dgo \
---type=TIME_LIMITED \
---cluster=my-management-cluster \
---node-type-config=type=standard-72,count=1 \
---management-range=10.170.16.0/20 \
---vmware-engine-network=us-west2-default
+if gcloud vmware private-clouds list --location us-central1-a | grep pc-1
+then
+   echo "pc-1 found, skip the build" 
+
+else
+    echo "pc-1 not found, trigger a build"
+    gcloud vmware private-clouds create pc-1 \
+    --location=us-central1-a \
+    --project=gcve-dgo \
+    --type=TIME_LIMITED \
+    --cluster=nprd-ll01 \
+    --node-type-config=type=standard-72,count=1 \
+    --management-range=10.170.0.0/20 \
+    --vmware-engine-network=us-central1-default
+fi
+
+if gcloud vmware private-clouds list --location us-west2-a | grep pc-2
+then
+   echo "pc-2 found, skip the build" 
+
+else
+    gcloud vmware private-clouds create pc-2 \
+    --location=us-west2-a \
+    --project=gcve-dgo \
+    --type=TIME_LIMITED \
+    --cluster=my-management-cluster \
+    --node-type-config=type=standard-72,count=1 \
+    --management-range=10.170.16.0/20 \
+    --vmware-engine-network=us-west2-default
+fi

@@ -24,7 +24,7 @@ steps:
       - 'CLOUDSDK_COMPUTE_REGION=us-central1'
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'ls'
+    entrypoint: './create_pcs.sh'
     dir: 'pcs'
     timeout: 240s
  
