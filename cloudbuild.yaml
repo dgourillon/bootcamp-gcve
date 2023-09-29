@@ -25,6 +25,7 @@ steps:
       - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'ls'
+    dir: 'pcs'
     timeout: 240s
  
 # [END cloudbuild_basic_config]
