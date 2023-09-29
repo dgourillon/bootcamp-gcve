@@ -27,7 +27,7 @@ steps:
   - id: 'build-private-clouds'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     dir: 'pcs'
-    timeout: 240s
+    timeout: 2h
     entrypoint: 'bash'
     args: ['create_pcs.sh']
 
