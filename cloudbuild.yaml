@@ -36,10 +36,6 @@ steps:
     dir: 'pc-1'
     timeout: 5m
     entrypoint: bash
-    args: 
-      - -c
-      - |
-       set_credentials.sh &&
-       mv gcve.credentials.auto.tfvars /workspace/gcve-pc1.credentials.auto.tfvars
+    args: ['set_credentials.sh']
   
 # [END cloudbuild_basic_config]
