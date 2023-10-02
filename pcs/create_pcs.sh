@@ -32,13 +32,13 @@ else
     gsutil rm gs://tfstate-gcve-bootcamp/pc2/*
 fi
 
-while gcloud vmware private-clouds list --location us-central1-a --format="value(vcenter.state)" --filter="name:pc-1" | grep -i "creating" 
+until gcloud vmware private-clouds list --location us-central1-a --format="value(vcenter.state)" --filter="name:pc-1" | grep -i "active" 
 do 
     echo "waiting for the PC pc1 to finish building"
     sleep 300
 done
 
-while gcloud vmware private-clouds list --location us-west2-a --format="value(vcenter.state)" --filter="name:pc-2" | grep -i "creating" 
+until gcloud vmware private-clouds list --location us-west2-a --format="value(vcenter.state)" --filter="name:pc-2" | grep -i "active" 
 do 
     echo "waiting for the PC pc2 to finish building"
     sleep 300
