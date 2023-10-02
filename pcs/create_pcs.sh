@@ -13,6 +13,7 @@ else
     --node-type-config=type=standard-72,count=1 \
     --management-range=10.170.0.0/20 \
     --vmware-engine-network=us-central1-default
+    gsutil rm gs://tfstate-gcve-bootcamp/pc1/*
 fi
 
 if gcloud vmware private-clouds list --location us-west2-a | grep pc-2
@@ -28,6 +29,7 @@ else
     --node-type-config=type=standard-72,count=1 \
     --management-range=10.170.16.0/20 \
     --vmware-engine-network=us-west2-default
+    gsutil rm gs://tfstate-gcve-bootcamp/pc2/*
 fi
 
 while gcloud vmware private-clouds list --location us-central1-a --format="value(vcenter.state)" --filter="name:pc-1" | grep -i "creating" 

@@ -4,8 +4,8 @@ PRIVATE_CLOUD="pc-1"
 ZONE="us-central1-a"
 PROJECT="gcve-dgo"
 
-CREDENTIALS_TFVARS="gcve.credentials.auto.tfvars"
-VM_CREATE_SCRIPT="create_vms.sh"
+CREDENTIALS_TFVARS="gcve-pc1.credentials.auto.tfvars"
+VM_CREATE_SCRIPT="create_vms_pc1.sh"
 
 VCENTER_IP=$(gcloud vmware private-clouds list --location=$ZONE --format="value(vcenter.internalIp)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT ) 
 VCENTER_URL=$(gcloud vmware private-clouds list --location=$ZONE --format="value(vcenter.fqdn)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT ) 
@@ -51,3 +51,5 @@ sed -i "s/GOVC_PASSWORD.*/GOVC_PASSWORD=$VCENTER_PWD/g" $VM_CREATE_SCRIPT
 
 mv $CREDENTIALS_TFVARS /workspace/$CREDENTIALS_TFVARS
 mv $VM_CREATE_SCRIPT /workspace/$VM_CREATE_SCRIPT
+
+
