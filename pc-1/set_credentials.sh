@@ -24,26 +24,26 @@ if test -f "$CREDENTIALS_TFVARS"; then
     echo "$CREDENTIALS_TFVARS exists."
 else
     echo "create $CREDENTIALS_TFVARS"	
-    cp $CREDENTIALS_TFVARS.template $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
+    cp $CREDENTIALS_TFVARS.template $PRIVATE_CLOUD-$CREDENTIALS_TFVARS
 fi
 
 if test -f "$PRIVATE_CLOUD-$VM_CREATE_SCRIPT"; then
-    echo "$PRIVATE_CLOUD$VM_CREATE_SCRIPT exists."
+    echo "$PRIVATE_CLOUD-$VM_CREATE_SCRIPT exists."
 else
     echo "create $VM_CREATE_SCRIPT"
     cp $VM_CREATE_SCRIPT.template $PRIVATE_CLOUD-$VM_CREATE_SCRIPT
 fi
 
 
-sed -i  "s/vsphere_server.*/vsphere_server   = \"$VCENTER_URL\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD 
-sed -i "s/vsphere_user.*/vsphere_user     = \"$VCENTER_USER\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
-sed -i "s/vsphere_password.*/vsphere_password = \"$VCENTER_PWD\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
-sed -i "s/vcenter_ip_address.*/vcenter_ip_address     = \"$VCENTER_IP\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
-sed -i "s/nsx_manager_ip_address.*/nsx_manager_ip_address = \"$NSX_IP\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
+sed -i  "s/vsphere_server.*/vsphere_server   = \"$VCENTER_URL\"/g" $PRIVATE_CLOUD-$CREDENTIALS_TFVARS 
+sed -i "s/vsphere_user.*/vsphere_user     = \"$VCENTER_USER\"/g" $PRIVATE_CLOUD-$CREDENTIALS_TFVARS
+sed -i "s/vsphere_password.*/vsphere_password = \"$VCENTER_PWD\"/g" $PRIVATE_CLOUD-$CREDENTIALS_TFVARS
+sed -i "s/vcenter_ip_address.*/vcenter_ip_address     = \"$VCENTER_IP\"/g" $PRIVATE_CLOUD-$CREDENTIALS_TFVARS
+sed -i "s/nsx_manager_ip_address.*/nsx_manager_ip_address = \"$NSX_IP\"/g" $PRIVATE_CLOUD-$CREDENTIALS_TFVARS
 
 
-sed -i "s/nsxt_password.*/nsxt_password = \"$NSX_PWD\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
-sed -i "s/nsxt_url.*/nsxt_url = \"$NSX_URL\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
+sed -i "s/nsxt_password.*/nsxt_password = \"$NSX_PWD\"/g" $PRIVATE_CLOUD-$CREDENTIALS_TFVARS
+sed -i "s/nsxt_url.*/nsxt_url = \"$NSX_URL\"/g" $PRIVATE_CLOUD-$CREDENTIALS_TFVARS
 
 
 sed -i  "s/GOVC_URL.*/GOVC_URL=https:\/\/$VCENTER_URL\/sdk/g" $PRIVATE_CLOUD-$VM_CREATE_SCRIPT
