@@ -4,8 +4,9 @@ PRIVATE_CLOUD="pc-1"
 ZONE="us-central1-a"
 PROJECT="gcve-dgo"
 
-CREDENTIALS_TFVARS="gcve-pc1.credentials.auto.tfvars"
-VM_CREATE_SCRIPT="create_vms_pc1.sh"
+CREDENTIALS_TFVARS="gcve.credentials.auto.tfvars"
+
+VM_CREATE_SCRIPT="create_vms.sh"
 
 VCENTER_IP=$(gcloud vmware private-clouds list --location=$ZONE --format="value(vcenter.internalIp)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT ) 
 VCENTER_URL=$(gcloud vmware private-clouds list --location=$ZONE --format="value(vcenter.fqdn)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT ) 
@@ -23,33 +24,31 @@ if test -f "$CREDENTIALS_TFVARS"; then
     echo "$CREDENTIALS_TFVARS exists."
 else
     echo "create $CREDENTIALS_TFVARS"	
-    cp $CREDENTIALS_TFVARS.template $CREDENTIALS_TFVARS
+    cp $CREDENTIALS_TFVARS.template $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
 fi
 
-if test -f "$VM_CREATE_SCRIPT"; then
-    echo "$VM_CREATE_SCRIPT exists."
+if test -f "$PRIVATE_CLOUD-$VM_CREATE_SCRIPT"; then
+    echo "$PRIVATE_CLOUD$VM_CREATE_SCRIPT exists."
 else
     echo "create $VM_CREATE_SCRIPT"
-    cp $VM_CREATE_SCRIPT.template $VM_CREATE_SCRIPT
+    cp $VM_CREATE_SCRIPT.template $PRIVATE_CLOUD-$VM_CREATE_SCRIPT
 fi
 
 
-sed -i  "s/vsphere_server.*/vsphere_server   = \"$VCENTER_URL\"/g" $CREDENTIALS_TFVARS 
-sed -i "s/vsphere_user.*/vsphere_user     = \"$VCENTER_USER\"/g" $CREDENTIALS_TFVARS
-sed -i "s/vsphere_password.*/vsphere_password = \"$VCENTER_PWD\"/g" $CREDENTIALS_TFVARS
-sed -i "s/vcenter_ip_address.*/vcenter_ip_address     = \"$VCENTER_IP\"/g" $CREDENTIALS_TFVARS
-sed -i "s/nsx_manager_ip_address.*/nsx_manager_ip_address = \"$NSX_IP\"/g" $CREDENTIALS_TFVARS
+sed -i  "s/vsphere_server.*/vsphere_server   = \"$VCENTER_URL\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD 
+sed -i "s/vsphere_user.*/vsphere_user     = \"$VCENTER_USER\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
+sed -i "s/vsphere_password.*/vsphere_password = \"$VCENTER_PWD\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
+sed -i "s/vcenter_ip_address.*/vcenter_ip_address     = \"$VCENTER_IP\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
+sed -i "s/nsx_manager_ip_address.*/nsx_manager_ip_address = \"$NSX_IP\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
 
 
-sed -i "s/nsxt_password.*/nsxt_password = \"$NSX_PWD\"/g" $CREDENTIALS_TFVARS
-sed -i "s/nsxt_url.*/nsxt_url = \"$NSX_URL\"/g" $CREDENTIALS_TFVARS
+sed -i "s/nsxt_password.*/nsxt_password = \"$NSX_PWD\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
+sed -i "s/nsxt_url.*/nsxt_url = \"$NSX_URL\"/g" $CREDENTIALS_TFVARS-$PRIVATE_CLOUD
 
 
-sed -i  "s/GOVC_URL.*/GOVC_URL=https:\/\/$VCENTER_URL\/sdk/g" $VM_CREATE_SCRIPT 
-sed -i  "s/GOVC_USERNAME.*/GOVC_USERNAME=$VCENTER_USER/g" $VM_CREATE_SCRIPT
-sed -i "s/GOVC_PASSWORD.*/GOVC_PASSWORD=$VCENTER_PWD/g" $VM_CREATE_SCRIPT
+sed -i  "s/GOVC_URL.*/GOVC_URL=https:\/\/$VCENTER_URL\/sdk/g" $PRIVATE_CLOUD-$VM_CREATE_SCRIPT
+sed -i  "s/GOVC_USERNAME.*/GOVC_USERNAME=$VCENTER_USER/g" $PRIVATE_CLOUD-$VM_CREATE_SCRIPT
+sed -i "s/GOVC_PASSWORD.*/GOVC_PASSWORD=$VCENTER_PWD/g" $PRIVATE_CLOUD-$VM_CREATE_SCRIPT
 
-mv $CREDENTIALS_TFVARS /workspace/$CREDENTIALS_TFVARS
-mv $VM_CREATE_SCRIPT /workspace/$VM_CREATE_SCRIPT
 
 
