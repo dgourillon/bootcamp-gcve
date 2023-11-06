@@ -1,4 +1,6 @@
 
+BUILD_PC_2=false
+
 if gcloud vmware private-clouds list --location us-central1-a | grep pc-1
 then
    echo "pc-1 found, skip the build" 
@@ -21,15 +23,18 @@ then
    echo "pc-2 found, skip the build" 
 
 else
-    gcloud vmware private-clouds create pc-2 \
-    --location=us-west2-a \
-    --project=gcve-dgo \
-    --type=TIME_LIMITED \
-    --cluster=my-management-cluster \
-    --node-type-config=type=standard-72,count=1 \
-    --management-range=10.170.16.0/20 \
-    --vmware-engine-network=us-west2-default
-    gsutil rm gs://tfstate-gcve-bootcamp/pc2/*
+    if $BUILD_PC_2
+    then
+        gcloud vmware private-clouds create pc-2 \
+        --location=us-west2-a \
+        --project=gcve-dgo \
+        --type=TIME_LIMITED \
+        --cluster=my-management-cluster \
+        --node-type-config=type=standard-72,count=1 \
+        --management-range=10.170.16.0/20 \
+        --vmware-engine-network=us-west2-default
+        gsutil rm gs://tfstate-gcve-bootcamp/pc2/*
+    fi
 fi
 
 until gcloud vmware private-clouds list --location us-central1-a --format="value(vcenter.state)" --filter="name:pc-1" | grep -i "active" 
