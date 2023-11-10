@@ -1,5 +1,5 @@
 
-BUILD_PC_2=false
+BUILD_PC_2=true
 
 if gcloud vmware private-clouds list --location us-central1-a | grep pc-1
 then
