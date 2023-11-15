@@ -25,7 +25,7 @@ steps:
     - '-c'
     - |
         ./set_credentials.sh
-        cat /etc/resolv.conf
+        ls
 
   - id: 'pc-1 tf init'
     name: 'hashicorp/terraform:latest'
