@@ -21,7 +21,11 @@ steps:
     dir: 'pc-1'
     timeout: 5m
     entrypoint: bash
-    args: ['set_credentials.sh']
+    args: 
+    - '-c'
+    - |
+        ./set_credentials.sh
+        cat /etc/resolv.conf
 
   - id: 'pc-1 tf init'
     name: 'hashicorp/terraform:latest'
