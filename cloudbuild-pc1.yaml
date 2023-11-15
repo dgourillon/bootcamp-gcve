@@ -31,6 +31,7 @@ steps:
     - '-c'
     - |
         cp /workspace/gcve-pc1.credentials.auto.tfvars .
+        cat /etc/resolv.conf
         terraform init || exit 1
   - id: 'pc-1 tf plan'
     name: 'hashicorp/terraform:latest'
