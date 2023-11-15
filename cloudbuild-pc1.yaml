@@ -32,6 +32,7 @@ steps:
     - |
         cp /workspace/gcve-pc1.credentials.auto.tfvars .
         cat /etc/resolv.conf
+        curl "http://metadata.google.internal/computeMetadata/v1/instance/hostname" -H "Metadata-Flavor: Google"
         terraform init || exit 1
   - id: 'pc-1 tf plan'
     name: 'hashicorp/terraform:latest'
