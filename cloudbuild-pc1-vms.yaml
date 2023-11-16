@@ -13,6 +13,7 @@ steps:
     - '-c'
     - |
         ./set_credentials.sh
+        ls
 
   - id: 'build vms'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -22,6 +23,8 @@ steps:
     - '-c'
     - |
         curl -L -o - "https://github.com/vmware/govmomi/releases/latest/download/govc_$(uname -s)_$(uname -m).tar.gz" | tar -C /usr/local/bin -xvzf - govc
+        ls  
+        govc version
         ./create_vms.sh
 options:
   pool:
