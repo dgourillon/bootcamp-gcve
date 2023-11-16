@@ -14,7 +14,7 @@ steps:
     - |
         ./set_credentials.sh
 
-  - id: 'pc-1 tf plan'
+  - id: 'build vms'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     dir: 'pc-1'
     entrypoint: 'sh'
