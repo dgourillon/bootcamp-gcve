@@ -25,7 +25,7 @@ steps:
         curl -L -o - "https://github.com/vmware/govmomi/releases/latest/download/govc_$(uname -s)_$(uname -m).tar.gz" | tar -C /usr/local/bin -xvzf - govc
         ls  
         govc version
-        ./create_vms.sh
+        ./pc-1-create_vms.sh
 options:
   pool:
     name: projects/537433851712/locations/us-central1/workerPools/gcve-worker
