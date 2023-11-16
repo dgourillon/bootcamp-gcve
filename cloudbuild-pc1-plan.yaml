@@ -14,7 +14,7 @@ steps:
     - |
         ./set_credentials.sh
 
-  - id: 'pc-1 tf apply'
+  - id: 'pc-1 tf plan'
     name: 'hashicorp/terraform:latest'
     dir: 'pc-1'
     entrypoint: 'sh'
