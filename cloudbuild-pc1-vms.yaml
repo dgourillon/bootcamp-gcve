@@ -17,6 +17,7 @@ steps:
 
   - id: 'build vms'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    timeout: '3200s'
     dir: 'pc-1'
     entrypoint: 'sh'
     args: 
