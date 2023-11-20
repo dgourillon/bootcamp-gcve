@@ -37,6 +37,8 @@ done
 for WINDOWS_VM in $(govc ls /Datacenter/vm/*/ | grep win) 
 do 
     echo "post boot script on $WINDOWS_VM"
+    govc vm.power -on $WINDOWS_VM
+    sleep 30
     govc guest.run -vm $WINDOWS_VM -l Administrator:ps0lab! "slmgr.vbs //b -rearm"
     govc guest.run -vm $WINDOWS_VM -l Administrator:ps0lab! "netsh advfirewall set allprofiles state off"
     govc guest.run -vm $WINDOWS_VM -l Administrator:ps0lab! "Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0"
