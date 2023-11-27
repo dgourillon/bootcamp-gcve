@@ -11,7 +11,7 @@ OVF_bucket=psolab-ovas-dgo
 project_id_default=$(gcloud projects list | grep migrate | tail -1 | awk '{print $1}')
 gcloud config set project $project_id_default 
 
-TEAM_COUNT=4
+TEAM_COUNT=$(cat terraform.tfvars | awk '/team_count/ {print $3}')
 for current_ovf in $(gsutil ls gs://$OVF_bucket/  | awk -F '/' '{print $4}' | grep ovf |  awk -F '.' '{print $1}')
     do
         
