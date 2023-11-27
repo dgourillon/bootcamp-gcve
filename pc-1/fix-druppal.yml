@@ -3,7 +3,13 @@
   hosts: all
   tasks:
     - name: replace sql IP in php conf file
-      shell: sed 's/host.*/host\' => \'DB_IP\'/g\'  /var/www/my_drupal/web/sites/default/settings.php | grep host
+      lineinfile: 
+        path: /var/www/my_drupal/web/sites/default/settings.php
+        regexp: '^(.*)host.*(.*)$' 
+        line: \'host\' => \'DB_IP\'/g\'
+        backrefs: yes
+    - name: show file content
+      shell: grep host  /var/www/my_drupal/web/sites/default/settings.php
     - name: restart php-fpm
       service:
         name: php-fpm 
