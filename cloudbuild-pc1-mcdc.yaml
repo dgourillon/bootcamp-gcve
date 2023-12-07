@@ -1,0 +1,27 @@
+
+
+# [START cloudbuild_basic_config]
+steps:
+
+  # Entrypoint, timeout and environment variables
+  - id: 'run the mfit script'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    timeout: '3200s'
+    dir: 'mfit'
+    entrypoint: 'sh'
+    args: 
+    - '-c'
+    - |
+        curl -L -o - "https://github.com/vmware/govmomi/releases/latest/download/govc_$(uname -s)_$(uname -m).tar.gz" | tar -C /usr/local/bin -xvzf - govc
+        ls  
+        govc version
+        ./mfit_assess.sh
+options:
+  pool:
+    name: projects/537433851712/locations/us-central1/workerPools/gcve-worker
+artifacts:
+  objects:
+    location: gs://gcve-dgo-mfit/
+    paths: [mcdc_result_full.html,mcdc_result.html]
+# [END cloudbuild_basic_config]
+
