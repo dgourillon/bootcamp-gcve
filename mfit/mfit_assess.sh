@@ -12,7 +12,7 @@ chmod +x mcdc-linux-collect.sh
 echo "purge db" | ./mcdc discover purge-db
 TEAM_COUNT=5
 
-sudo setcap cap_net_raw+ep ./mcdc
+setcap cap_net_raw+ep ./mcdc
 
 export GOVC_URL=$(gcloud vmware private-clouds list --location=$ZONE --format="value(vcenter.fqdn)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT ) 
 export GOVC_USERNAME=$(gcloud vmware private-clouds vcenter credentials describe --private-cloud=$PRIVATE_CLOUD --location=$ZONE --project $PROJECT --format="value(username)")
