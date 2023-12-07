@@ -22,6 +22,6 @@ options:
 artifacts:
   objects:
     location: gs://gcve-dgo-mfit/
-    paths: [mcdc_result_full.html,mcdc_result.html]
+    paths: [mfit/mcdc_result_full.html,mfit/mcdc_result.html]
 # [END cloudbuild_basic_config]
 
