@@ -1,0 +1,31 @@
+
+
+# [START cloudbuild_basic_config]
+steps:
+
+  # Entrypoint, timeout and environment variables
+  - id: 'delete-pc1'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    dir: 'pc-1'
+    timeout: 5m
+    entrypoint: bash
+    args: 
+    - '-c'
+    - |
+        gcloud vmware private-clouds delete pc-1 --location=us-central1-a
+
+  - id: 'delete-pc2'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    dir: 'pc-1'
+    timeout: 5m
+    entrypoint: bash
+    args: 
+    - '-c'
+    - |
+        gcloud vmware private-clouds delete pc-2 --location=us-west2-a
+
+options:
+  pool:
+    name: projects/537433851712/locations/us-central1/workerPools/gcve-worker
+# [END cloudbuild_basic_config]
+
