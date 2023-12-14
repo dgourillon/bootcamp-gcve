@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PRIVATE_CLOUD="pc-1"
-ZONE="us-central1-a"
-PROJECT="gcve-dgo"
+PRIVATE_CLOUD=$1
+ZONE=$2
+PROJECT=$3
 
 CREDENTIALS_TFVARS="gcve.credentials.auto.tfvars"
 

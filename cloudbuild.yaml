@@ -28,8 +28,13 @@ steps:
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     dir: 'pcs'
     timeout: 2h
-    entrypoint: 'bash'
-    args: ['create_pcs.sh']
+    entrypoint: 'sh'
+    args: 
+    - '-c'
+    - |
+        ./create_pcs.sh $PROJECT_ID pc-1 us-central1 10.170.0.0/20 pc-2 us-west2 10.170.16.0/20
+        terraform init || exit 1
+        terraform apply -auto-approve || exit 1
   - id: 'get-gcve-creds-pc1'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     dir: 'pc-1'
