@@ -12,7 +12,7 @@ steps:
     args: 
     - '-c'
     - |
-        gcloud vmware private-clouds delete pc-1 --location=us-central1-a
+        gcloud vmware private-clouds delete pc-1 --location=us-central1-a --project $PROJECT_ID
 
   - id: 'delete-pc2'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -22,7 +22,7 @@ steps:
     args: 
     - '-c'
     - |
-        gcloud vmware private-clouds delete pc-2 --location=us-west2-a
+        gcloud vmware private-clouds delete pc-2 --location=us-west2-a --project $PROJECT_ID
 
 options:
   pool:
