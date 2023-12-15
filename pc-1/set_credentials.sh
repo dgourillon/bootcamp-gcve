@@ -8,6 +8,10 @@ CREDENTIALS_TFVARS="gcve.credentials.auto.tfvars"
 
 VM_CREATE_SCRIPT="create_vms.sh"
 
+echo "Build Private cloud $PRIVATE_CLOUD"
+echo "Zone $ZONE"
+echo "Project $PROJECT"
+
 VCENTER_IP=$(gcloud vmware private-clouds list --location=$ZONE --format="value(vcenter.internalIp)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT ) 
 VCENTER_URL=$(gcloud vmware private-clouds list --location=$ZONE --format="value(vcenter.fqdn)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT ) 
 VCENTER_USER=$(gcloud vmware private-clouds vcenter credentials describe --private-cloud=$PRIVATE_CLOUD --location=$ZONE --project $PROJECT --format="value(username)")
