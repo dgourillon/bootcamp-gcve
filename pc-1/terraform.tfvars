@@ -16,7 +16,7 @@
 
 
 // NSX-T Segments
-team_count = 4
+team_count = 10
 
 segments = [
   {
