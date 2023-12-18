@@ -12,7 +12,7 @@ steps:
     args: 
     - '-c'
     - |
-        ./set_credentials.sh
+        ./set_credentials.sh pc-1 us-central1-a $PROJECT_ID
         ls
 
   - id: 'build vms'
