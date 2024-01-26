@@ -26,8 +26,6 @@ steps:
     - '-c'
     - |
         ./create_pcs.sh $PROJECT_ID pc-1 us-central1 10.170.0.0/20 pc-2 us-west2 10.170.16.0/20
-        terraform init || exit 1
-        terraform apply -auto-approve || exit 1
   
 
 # [END cloudbuild_basic_config]
