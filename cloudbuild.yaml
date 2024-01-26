@@ -16,14 +16,7 @@
 steps:
 
   # Entrypoint, timeout and environment variables
-  - id: 'test-step'
-    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'gcloud'
-    timeout: 240s
-    args: ['compute', 'instances', 'list']
-    env:
-      - 'CLOUDSDK_COMPUTE_REGION=us-central1'
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+
   - id: 'build-private-clouds'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     dir: 'pcs'
@@ -35,31 +28,7 @@ steps:
         ./create_pcs.sh $PROJECT_ID pc-1 us-central1 10.170.0.0/20 pc-2 us-west2 10.170.16.0/20
         terraform init || exit 1
         terraform apply -auto-approve || exit 1
-  - id: 'get-gcve-creds-pc1'
-    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    dir: 'pc-1'
-    timeout: 5m
-    entrypoint: bash
-    args: ['set_credentials.sh']
-
-  - id: 'pc-1 tf init'
-    name: 'hashicorp/terraform:latest'
-    dir: 'pc-1'
-    entrypoint: 'sh'
-    args: 
-    - '-c'
-    - |
-        cp /workspace/gcve-pc1.credentials.auto.tfvars .
-        terraform init || exit 1
-  - id: 'pc-1 tf plan'
-    name: 'hashicorp/terraform:latest'
-    dir: 'pc-1'
-    entrypoint: 'sh'
-    args: 
-    - '-c'
-    - |
-        cp /workspace/gcve-pc1.credentials.auto.tfvars .
-        terraform plan || exit 1
+  
 
 # [END cloudbuild_basic_config]
 
