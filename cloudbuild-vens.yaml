@@ -17,17 +17,6 @@ steps:
 
   # Entrypoint, timeout and environment variables
 
-  - id: 'build-private-clouds'
-    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    dir: 'pcs'
-    timeout: 2h
-    entrypoint: 'sh'
-    args: 
-    - '-c'
-    - |
-        ./create_pcs.sh $PROJECT_ID pc-1 us-central1 10.170.0.0/20 pc-2 us-west2 10.170.16.0/20
-  
-
   - id: 'build-vmwareengine-networks'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     dir: 'pcs'
@@ -37,7 +26,7 @@ steps:
     - '-c'
     - |
         gcloud vmware networks create usc1-ven --project=$PROJECT_ID --location=us-central1
-        gcloud vmware networks create usc1-ven --project=$PROJECT_ID --location=us-west2
+        gcloud vmware networks create usw2-ven --project=$PROJECT_ID --location=us-west2
 
 # [END cloudbuild_basic_config]
 
