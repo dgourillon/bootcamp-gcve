@@ -24,7 +24,7 @@ steps:
     args: 
     - '-c'
     - |
-        ./set_credentials.sh "pc-1" "us-central1-a" $PROJECT_ID
+        ./set_credentials.sh "pc-1" "us-west2-a" $PROJECT_ID
 
   - id: 'pc-1 tf apply'
     name: 'hashicorp/terraform:latest'
