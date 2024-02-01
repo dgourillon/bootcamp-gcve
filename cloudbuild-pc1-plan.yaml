@@ -26,6 +26,6 @@ steps:
         terraform plan || exit 1
 options:
   pool:
-    name: projects/537433851712/locations/us-central1/workerPools/gcve-worker
+    name: projects/$PROJECT_NUMBER/locations/us-central1/workerPools/gcve-pool
 # [END cloudbuild_basic_config]
 

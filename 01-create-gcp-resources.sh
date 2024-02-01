@@ -81,21 +81,35 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/vmwareengine.vmwareengineAdmin"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+    --role="roles/storage.objectUser"
 
-gcloud beta builds triggers create manual \
---region=us-central1 \
---name=build-pcs \
---service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
---build-config=cloudbuild.yaml \
---repo="https://github.com/dgourillon/bootcamp-gcve.git" \
---repo-type=GITHUB \
---branch=main
+gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID --location=global
 
-gcloud beta builds triggers create manual \
+
+
+gcloud beta builds triggers create github --name="build-pcs" \
 --region=us-central1 \
---name=build-vens \
 --service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
---build-config=cloudbuild-vens.yaml \
---repo="https://github.com/dgourillon/bootcamp-gcve.git" \
---repo-type=GITHUB \
---branch=main
+--repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
+--branch-pattern="^build_branch.*" \
+--build-config="cloudbuild.yaml"
+
+
+
+gcloud beta builds triggers create github --name="build-pcs" \
+--region=us-central1 \
+--service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+--repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
+--branch-pattern="^build_branch.*" \
+--build-config="cloudbuild.yaml"
+
+
+
+gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resources" \
+--region=us-central1 \
+--service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+--repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
+--branch-pattern="^build_branch.*" \
+--build-config="cloudbuild-pc1-apply.yaml"

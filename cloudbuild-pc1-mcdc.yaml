@@ -18,7 +18,7 @@ steps:
         ./mfit_assess.sh
 options:
   pool:
-    name: projects/537433851712/locations/us-central1/workerPools/gcve-worker
+    name: projects/$PROJECT_NUMBER/locations/us-central1/workerPools/gcve-pool
 artifacts:
   objects:
     location: gs://gcve-dgo-mfit/
