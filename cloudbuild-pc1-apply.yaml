@@ -35,6 +35,7 @@ steps:
     - |
         cp /workspace/gcve-pc1.credentials.auto.tfvars .
         sed -i "s/tfstate-gcve-bootcamp/$PROJECT_NUMBER-gcve-bootcamp/g" backend.tf 
+        cat backend.tf
         terraform init || exit 1
         terraform apply -auto-approve || exit 1
 options:
