@@ -16,6 +16,8 @@ else
     exit 1
 fi
 
+## Create of the network resources 
+
 gcloud compute networks create $GCVE_NETWORK_NAME \
     --subnet-mode=custom 
 
@@ -44,6 +46,25 @@ gcloud services vpc-peerings connect \
     --network=$GCVE_NETWORK_NAME \
     --project=$(gcloud config get-value project)
 
+gcloud compute firewall-rules create allow-iap-ingress --allow=tcp:22,3389 \
+--network=$GCVE_NETWORK_NAME \
+--description="Allow incoming traffic on TCP 3389 aznd 22 for IAP" \
+--source-ranges="130.211.0.0/22,35.191.0.0/16" \
+--direction=INGRESS
+
+gcloud compute firewall-rules create allow-internal --allow=tcp \
+--network=$GCVE_NETWORK_NAME \
+--description="Allow internal traffic" \
+--source-ranges="10.0.0.0/8" \
+--direction=INGRESS
+
+gcloud compute firewall-rules create allow-egress --allow=tcp \
+--network=$GCVE_NETWORK_NAME \
+--description="Allow egress" \
+--direction=EGRESS
+
+
+## Create of the cloud build related resources 
 
 
    gcloud builds repositories create bootcamp-gcve \
@@ -65,6 +86,8 @@ gcloud builds worker-pools create gcve-pool \
 
 rm private_pool_config.yaml
 
+## Create of the IAM and service account resources
+
 gcloud iam service-accounts create gcve-bootcamp-sa \
     --description="gcve bootcamp build SA " \
     --display-name="gcve-bootcamp-sa"
@@ -84,6 +107,11 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/storage.objectUser"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+    --role="roles/logging.logWriter"
+
 
 gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID --location=global
 
@@ -113,3 +141,6 @@ gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resource
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
 --branch-pattern="^build_branch.*" \
 --build-config="cloudbuild-pc1-apply.yaml"
+
+
+gsutil mb gs://$PROJECT_NUMBER-gcve-bootcamp
