@@ -25,6 +25,11 @@ steps:
     - '-c'
     - |
         ./set_credentials.sh "pc-1" "us-west2-a" $PROJECT_ID
+        cat ./gcve-pc1.credentials.auto.tfvars
+        cp ./gcve-pc1.credentials.auto.tfvars /workspace/
+
+ 
+  # Entrypoint, timeout and environment variables 
 
   - id: 'pc-1 tf apply'
     name: 'hashicorp/terraform:latest'

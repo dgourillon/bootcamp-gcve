@@ -8,9 +8,7 @@ CREDENTIALS_TFVARS="gcve.credentials.auto.tfvars"
 
 VM_CREATE_SCRIPT="create_vms.sh"
 
-echo "Build Private cloud $PRIVATE_CLOUD"
-echo "Zone $ZONE"
-echo "Project $PROJECT"
+echo "fetch credentials for Private cloud $PRIVATE_CLOUD in Zone $ZONE in Project $PROJECT"
 
 VCENTER_IP=$(gcloud vmware private-clouds list --location=$ZONE --format="value(vcenter.internalIp)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT ) 
 VCENTER_URL=$(gcloud vmware private-clouds list --location=$ZONE --format="value(vcenter.fqdn)" --filter="name=projects/$PROJECT/locations/$ZONE/privateClouds/$PRIVATE_CLOUD" --project $PROJECT ) 
@@ -24,10 +22,10 @@ NSX_USER=$(gcloud vmware private-clouds nsx credentials describe --private-cloud
 NSX_PWD=$(gcloud vmware private-clouds nsx credentials describe --private-cloud=$PRIVATE_CLOUD --location=$ZONE --project $PROJECT --format="value(password)")
 
 
-if test -f "$CREDENTIALS_TFVARS"; then
-    echo "$CREDENTIALS_TFVARS exists."
+if test -f "$PRIVATE_CLOUD-$CREDENTIALS_TFVARS"; then
+    echo "$PRIVATE_CLOUD-$CREDENTIALS_TFVARS exists."
 else
-    echo "create $CREDENTIALS_TFVARS"	
+    echo "create $PRIVATE_CLOUD-$CREDENTIALS_TFVARS"	
     cp $CREDENTIALS_TFVARS.template $PRIVATE_CLOUD-$CREDENTIALS_TFVARS
 fi
 
