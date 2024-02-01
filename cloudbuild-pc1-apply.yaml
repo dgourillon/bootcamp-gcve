@@ -25,8 +25,8 @@ steps:
     - '-c'
     - |
         ./set_credentials.sh "pc-1" "us-west2-a" $PROJECT_ID
-        cat ./gcve-pc1.credentials.auto.tfvars
-        cp ./gcve-pc1.credentials.auto.tfvars /workspace/
+        cat ./pc-1-gcve.credentials.auto.tfvars
+        cp ./pc-1-gcve.credentials.auto.tfvars /workspace/
 
  
   # Entrypoint, timeout and environment variables 
@@ -38,7 +38,7 @@ steps:
     args: 
     - '-c'
     - |
-        cp /workspace/gcve-pc1.credentials.auto.tfvars .
+        cp /workspace/pc-1-gcve.credentials.auto.tfvars .
         sed -i "s/tfstate-gcve-bootcamp/$PROJECT_NUMBER-gcve-bootcamp/g" backend.tf 
         cat backend.tf
         cat gcve-pc1.credentials.auto.tfvars
