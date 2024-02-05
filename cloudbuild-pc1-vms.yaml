@@ -37,5 +37,6 @@ steps:
 options:
   pool:
     name: projects/$PROJECT_NUMBER/locations/us-central1/workerPools/gcve-pool
+  logging: CLOUD_LOGGING_ONLY
 # [END cloudbuild_basic_config]
 

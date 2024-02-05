@@ -166,7 +166,7 @@ gcloud beta builds triggers create github --name="build-vms" \
 --service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
 --branch-pattern="^build_branch.*" \
---build-config="cloudbuild-pc1-apply.yaml"
+--build-config="cloudbuild-pc1-vms.yaml"
 
 
 # Create of the storage bucket for the tfstates
