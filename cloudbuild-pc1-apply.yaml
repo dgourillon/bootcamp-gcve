@@ -40,7 +40,8 @@ steps:
         sed -i "s/tfstate-gcve-bootcamp/$PROJECT_NUMBER-gcve-bootcamp/g" backend.tf 
         terraform init || exit 1
         terraform plan -out=tfplan || exit 1
-        terraform show -json tfplan | jq > plan_$BUILD_ID.json
+        apk add -U --no-cache jq
+        terraform show -json tfplan | jq '.' > plan_$BUILD_ID.json
         terraform apply -auto-approve || exit 1
     volumes:
     - name: 'tfvarsvolume'
