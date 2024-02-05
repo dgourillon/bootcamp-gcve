@@ -12,7 +12,7 @@ steps:
     args: 
     - '-c'
     - |
-        ./set_credentials.sh pc-1 us-west2 $PROJECT_ID
+        ./set_credentials.sh pc-1 us-west2-a $PROJECT_ID
         cp ./pc-1-create_vms.sh /tfvarsvolume/pc-1-create_vms.sh
     volumes:
     - name: 'tfvarsvolume'
