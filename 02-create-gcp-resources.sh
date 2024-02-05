@@ -1,6 +1,6 @@
 
 
-./00-variables.sh
+. ./00-variables.sh
 
 if gcloud builds connections list --region us-central1 | grep $GITHUB_CONNECTION_NAME
 then
