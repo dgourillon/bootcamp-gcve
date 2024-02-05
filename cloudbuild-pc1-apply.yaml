@@ -24,7 +24,6 @@ steps:
     - |
         ./set_credentials.sh "pc-1" "us-west2-a" $PROJECT_ID
         cp ./pc-1-gcve.credentials.auto.tfvars /tfvarsvolume/
-        cat ./pc-1-gcve.credentials.auto.tfvars
     volumes:
     - name: 'tfvarsvolume'
       path: '/tfvarsvolume'
