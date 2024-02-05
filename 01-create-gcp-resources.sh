@@ -7,6 +7,7 @@ GITHUB_CONNECTION_NAME=gcve-github-connection
 PROJECT_ID=$(gcloud config get-value project)
 PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
 CLOUD_BUILD_SA="$PROJECT_NUMBER@cloudbuild.gserviceaccount.com"
+BASTION_COUNT=2
 
 if gcloud builds connections list --region us-central1 | grep $GITHUB_CONNECTION_NAME
 then
@@ -46,23 +47,38 @@ gcloud services vpc-peerings connect \
     --network=$GCVE_NETWORK_NAME \
     --project=$(gcloud config get-value project)
 
-gcloud compute firewall-rules create allow-iap-ingress --allow=tcp:22,3389 \
---network=$GCVE_NETWORK_NAME \
---description="Allow incoming traffic on TCP 3389 aznd 22 for IAP" \
---source-ranges="130.211.0.0/22,35.191.0.0/16" \
---direction=INGRESS
+gcloud compute firewall-rules create $GCVE_NETWORK_NAME-allow-ingress-from-iap \
+  --network=$GCVE_NETWORK_NAME \
+  --direction=INGRESS \
+  --action=allow \
+  --rules=tcp:22,tcp:3389 \
+  --source-ranges=35.235.240.0/20
 
-gcloud compute firewall-rules create allow-internal --allow=tcp \
+gcloud compute firewall-rules create $GCVE_NETWORK_NAME-allow-internal \
+--action=allow \
 --network=$GCVE_NETWORK_NAME \
 --description="Allow internal traffic" \
+--rules=all \
 --source-ranges="10.0.0.0/8" \
 --direction=INGRESS
 
-gcloud compute firewall-rules create allow-egress --allow=tcp \
+gcloud compute firewall-rules create $GCVE_NETWORK_NAME-allow-egress \
+--action=allow \
+--rules=all \
+--destination-ranges=0.0.0.0/0 \
 --network=$GCVE_NETWORK_NAME \
 --description="Allow egress" \
 --direction=EGRESS
 
+gcloud compute routers create $GCVE_NETWORK_NAME-router \
+    --network=$GCVE_NETWORK_NAME \
+    --region=us-central1 
+
+gcloud compute routers nats create $GCVE_NETWORK_NAME-nat \
+    --router=$GCVE_NETWORK_NAME-router \
+    --nat-all-subnet-ip-ranges \
+    --region=us-central1 \
+    --auto-allocate-nat-external-ips
 
 ## Create of the cloud build related resources 
 
@@ -112,9 +128,11 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/logging.logWriter"
 
+# Create of the vmware engine network
 
 gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID --location=global
 
+# Create of the cloud build triggers for the VSphere and NSXT steps
 
 
 gcloud beta builds triggers create github --name="build-pcs" \
@@ -143,4 +161,38 @@ gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resource
 --build-config="cloudbuild-pc1-apply.yaml"
 
 
+# Create of the storage bucket for the tfstates
+
 gsutil mb gs://$PROJECT_NUMBER-gcve-bootcamp
+
+# Create bastions
+
+for i in $(seq 1 $BASTION_COUNT); do
+
+    gcloud compute instances create bastion-${i} \
+    --zone=us-central1-a \
+    --machine-type=e2-medium \
+    --image-family=windows-2019 \
+    --image-project=windows-cloud \
+    --boot-disk-size=50GB \
+    --boot-disk-type=pd-standard \
+    --provisioning-model=SPOT \
+    --instance-termination-action=STOP \
+    --maintenance-policy=TERMINATE \
+    --boot-disk-device-name=bastion-${i} \
+    --metadata=enable-oslogin=TRUE \
+    --scopes=https://www.googleapis.com/auth/cloud-platform \
+    --no-shielded-secure-boot \
+    --shielded-vtpm \
+    --shielded-integrity-monitoring \
+    --reservation-affinity=any \
+    --network-interface=stack-type=IPV4_ONLY,subnet=usc1-subnet,no-address 
+
+done
+
+gcloud compute instances create instance-20240205-134325 
+--project=network-target-1 
+--zone=us-central1-a 
+--machine-type=e2-medium 
+--network-interface=stack-type=IPV4_ONLY,subnet=usc1-subnet,no-address 
+--maintenance-policy=MIGRATE --provisioning-model=STANDARD --service-account=61104358945-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --create-disk=auto-delete=yes,boot=yes,device-name=instance-20240205-134325,image=projects/windows-cloud/global/images/windows-server-2022-dc-v20240111,mode=rw,size=50,type=projects/network-target-1/zones/us-central1-a/diskTypes/pd-balanced --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --labels=goog-ec-src=vm_add-gcloud --reservation-affinity=any
