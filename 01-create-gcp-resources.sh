@@ -161,6 +161,14 @@ gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resource
 --build-config="cloudbuild-pc1-apply.yaml"
 
 
+gcloud beta builds triggers create github --name="build-vms" \
+--region=us-central1 \
+--service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+--repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
+--branch-pattern="^build_branch.*" \
+--build-config="cloudbuild-pc1-apply.yaml"
+
+
 # Create of the storage bucket for the tfstates
 
 gsutil mb gs://$PROJECT_NUMBER-gcve-bootcamp
@@ -186,9 +194,10 @@ for i in $(seq 1 $BASTION_COUNT); do
     --shielded-vtpm \
     --shielded-integrity-monitoring \
     --reservation-affinity=any \
-    --network-interface=stack-type=IPV4_ONLY,subnet=usc1-subnet,no-address 
-
+    --network-interface=stack-type=IPV4_ONLY,subnet=usc1-subnet,no-address \
+     --metadata=windows-startup-script-ps1='$LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object    System.Net.WebClient).DownloadFile(\'http://dl.google.com/chrome/install/375.126/chrome_installer.exe\', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor =  "ChromeInstaller"; Do { $ProcessesFound = Get-Process | ?{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join \', \')" | Write-Host; Start-Sleep -Seconds 2 } else { rm "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound)'
 done
+
 
 gcloud compute instances create instance-20240205-134325 
 --project=network-target-1 

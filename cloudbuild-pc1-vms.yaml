@@ -12,8 +12,11 @@ steps:
     args: 
     - '-c'
     - |
-        ./set_credentials.sh pc-1 us-central1-a $PROJECT_ID
-        ls
+        ./set_credentials.sh pc-1 us-west2 $PROJECT_ID
+        cp ./pc-1-create_vms.sh /tfvarsvolume/pc-1-create_vms.sh
+    volumes:
+    - name: 'tfvarsvolume'
+      path: '/tfvarsvolume'
 
   - id: 'build vms'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -26,7 +29,11 @@ steps:
         curl -L -o - "https://github.com/vmware/govmomi/releases/latest/download/govc_$(uname -s)_$(uname -m).tar.gz" | tar -C /usr/local/bin -xvzf - govc
         ls  
         govc version
+        cp /tfvarsvolume/pc-1-create_vms.sh ./pc-1-create_vms.sh
         ./pc-1-create_vms.sh
+    volumes:
+    - name: 'tfvarsvolume'
+      path: '/tfvarsvolume'
 options:
   pool:
     name: projects/$PROJECT_NUMBER/locations/us-central1/workerPools/gcve-pool
