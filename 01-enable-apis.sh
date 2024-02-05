@@ -2,7 +2,7 @@
 
 # base setup API 
 
-
+./00-variables.sh
 
 gcloud services enable artifactregistry.googleapis.com \
     autoscaling.googleapis.com \

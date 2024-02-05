@@ -1,13 +1,6 @@
 
 
-
-
-GCVE_NETWORK_NAME=gcve-network
-GITHUB_CONNECTION_NAME=gcve-github-connection
-PROJECT_ID=$(gcloud config get-value project)
-PROJECT_NUMBER=$(gcloud projects list --filter="$PROJECT_ID" --format="value(PROJECT_NUMBER)")
-CLOUD_BUILD_SA="$PROJECT_NUMBER@cloudbuild.gserviceaccount.com"
-BASTION_COUNT=2
+./00-variables.sh
 
 if gcloud builds connections list --region us-central1 | grep $GITHUB_CONNECTION_NAME
 then
@@ -135,22 +128,6 @@ gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID -
 # Create of the cloud build triggers for the VSphere and NSXT steps
 
 
-gcloud beta builds triggers create github --name="build-pcs" \
---region=us-central1 \
---service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
---repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
---branch-pattern="^build_branch.*" \
---build-config="cloudbuild.yaml"
-
-
-
-gcloud beta builds triggers create github --name="build-pcs" \
---region=us-central1 \
---service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
---repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
---branch-pattern="^build_branch.*" \
---build-config="cloudbuild.yaml"
-
 
 
 gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resources" \
@@ -159,6 +136,7 @@ gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resource
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
 --branch-pattern="^build_branch.*" \
 --build-config="cloudbuild-pc1-apply.yaml"
+--substitutions=PC1_NAME="$PC1_NAME",PC1_LOCATION="$PC1_LOCATION",PC2_NAME="$PC2_NAME",PC2_LOCATION="$PC2_LOCATION"
 
 
 gcloud beta builds triggers create github --name="build-vms" \
@@ -167,6 +145,8 @@ gcloud beta builds triggers create github --name="build-vms" \
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
 --branch-pattern="^build_branch.*" \
 --build-config="cloudbuild-pc1-vms.yaml"
+--substitutions=PC1_NAME="$PC1_NAME",PC1_LOCATION="$PC1_LOCATION",PC2_NAME="$PC2_NAME",PC2_LOCATION="$PC2_LOCATION"
+
 
 
 # Create of the storage bucket for the tfstates
@@ -180,7 +160,7 @@ for i in $(seq 1 $BASTION_COUNT); do
     gcloud compute instances create bastion-${i} \
     --zone=us-central1-a \
     --machine-type=e2-medium \
-    --image-family=windows-2019 \
+    --image-family=windows-2022 \
     --image-project=windows-cloud \
     --boot-disk-size=50GB \
     --boot-disk-type=pd-standard \
@@ -195,13 +175,6 @@ for i in $(seq 1 $BASTION_COUNT); do
     --shielded-integrity-monitoring \
     --reservation-affinity=any \
     --network-interface=stack-type=IPV4_ONLY,subnet=usc1-subnet,no-address \
-     --metadata=windows-startup-script-ps1='$LocalTempDir = $env:TEMP; $ChromeInstaller = "ChromeInstaller.exe"; (new-object    System.Net.WebClient).DownloadFile(\'http://dl.google.com/chrome/install/375.126/chrome_installer.exe\', "$LocalTempDir\$ChromeInstaller"); & "$LocalTempDir\$ChromeInstaller" /silent /install; $Process2Monitor =  "ChromeInstaller"; Do { $ProcessesFound = Get-Process | ?{$Process2Monitor -contains $_.Name} | Select-Object -ExpandProperty Name; If ($ProcessesFound) { "Still running: $($ProcessesFound -join \', \')" | Write-Host; Start-Sleep -Seconds 2 } else { rm "$LocalTempDir\$ChromeInstaller" -ErrorAction SilentlyContinue -Verbose } } Until (!$ProcessesFound)'
+    
 done
 
-
-gcloud compute instances create instance-20240205-134325 
---project=network-target-1 
---zone=us-central1-a 
---machine-type=e2-medium 
---network-interface=stack-type=IPV4_ONLY,subnet=usc1-subnet,no-address 
---maintenance-policy=MIGRATE --provisioning-model=STANDARD --service-account=61104358945-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --create-disk=auto-delete=yes,boot=yes,device-name=instance-20240205-134325,image=projects/windows-cloud/global/images/windows-server-2022-dc-v20240111,mode=rw,size=50,type=projects/network-target-1/zones/us-central1-a/diskTypes/pd-balanced --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --labels=goog-ec-src=vm_add-gcloud --reservation-affinity=any
