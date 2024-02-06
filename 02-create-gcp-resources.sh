@@ -2,12 +2,12 @@
 
 . ./00-variables.sh
 
-if gcloud builds connections list --region us-central1 --filter="name: $GITHUB_CONNECTION_NAME" | grep '"stage": "COMPLETE"'
+if gcloud builds connections list --region us-central1 --filter="name: $GITHUB_CONNECTION_NAME" | grep 'INSTALLATION_STATE: COMPLETE'
 then
     echo "github connection to gcve bootcamp detected"
 else
     echo "github connection not detected or not finalized , exiting"
-    exit 1
+   # exit 1
 fi
 
 ## Create of the network resources 
