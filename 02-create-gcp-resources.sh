@@ -127,7 +127,7 @@ gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID -
 
 
  gcloud vmware private-clouds create $PC1_NAME \
-    --location=$PC1_LOCATION-a \
+    --location=$PC1_ZONE \
     --project=$PROJECT_ID \
     --type=TIME_LIMITED \
     --cluster=my-management-cluster \
@@ -136,7 +136,7 @@ gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID -
     --vmware-engine-network=$VEN_NAME
 
  gcloud vmware private-clouds create $PC2_NAME \
-    --location=$PC2_LOCATION-a \
+    --location=$PC2_ZONE \
     --project=$PROJECT_ID \
     --type=TIME_LIMITED \
     --cluster=my-management-cluster \
@@ -155,7 +155,7 @@ gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resource
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
 --branch-pattern="^build_branch.*" \
 --build-config="cloudbuild-pc1-apply.yaml" \
---substitutions="_PC1_NAME=$PC1_NAME,_PC1_LOCATION=$PC1_LOCATION,_PC2_NAME=$PC2_NAME,_PC2_LOCATION=$PC2_LOCATION"
+--substitutions="_PC1_NAME=$PC1_NAME,_PC1_LOCATION=$PC1_ZONE,_PC2_NAME=$PC2_NAME,_PC2_LOCATION=$PC2_ZONE"
 
 
 gcloud beta builds triggers create github --name="build-vms" \
@@ -164,7 +164,7 @@ gcloud beta builds triggers create github --name="build-vms" \
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
 --branch-pattern="^build_branch.*" \
 --build-config="cloudbuild-pc1-vms.yaml" \
---substitutions="_PC1_NAME=$PC1_NAME,_PC1_LOCATION=$PC1_LOCATION,_PC2_NAME=$PC2_NAME,_PC2_LOCATION=$PC2_LOCATION"
+--substitutions="_PC1_NAME=$PC1_NAME,_PC1_LOCATION=$PC1_ZONE,_PC2_NAME=$PC2_NAME,_PC2_LOCATION=$PC2_ZONE"
 
 
 

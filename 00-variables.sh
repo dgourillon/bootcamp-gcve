@@ -7,9 +7,14 @@ CLOUD_BUILD_SA="$PROJECT_NUMBER@cloudbuild.gserviceaccount.com"
 
 export PC1_NAME=pc-1
 export PC1_LOCATION=us-west2
+export PC1_ZONE=a
+export PC1_ZONE="$PC1_LOCATION-$PC1_ZONE"
 export PC1_ADMIN_RANGE="10.170.0.0/20"
 export PC2_NAME=pc-2
 export PC2_LOCATION=us-west2
+export PC2_ZONE=a
+export PC1_ZONE="$PC2_LOCATION-$PC2_ZONE"
+export PC2_ZONE=us-west2-a
 export PC2_ADMIN_RANGE="10.170.16.0/20"
 
 
