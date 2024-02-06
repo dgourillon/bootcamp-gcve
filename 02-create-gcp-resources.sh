@@ -166,6 +166,14 @@ gcloud beta builds triggers create github --name="build-vms" \
 --build-config="cloudbuild-pc1-vms.yaml" \
 --substitutions="_PC1_NAME=$PC1_NAME,_PC1_LOCATION=$PC1_ZONE,_PC2_NAME=$PC2_NAME,_PC2_LOCATION=$PC2_ZONE"
 
+gcloud beta builds triggers create github --name="mcdc-assessment" \
+--region=us-central1 \
+--service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+--repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
+--branch-pattern="^build_branch.*" \
+--build-config="cloudbuild-pc1-mcdc.yaml" \
+--substitutions="_PC1_NAME=$PC1_NAME,_PC1_LOCATION=$PC1_ZONE,_PC2_NAME=$PC2_NAME,_PC2_LOCATION=$PC2_ZONE"
+
 
 
 # Create of the storage bucket for the tfstates
