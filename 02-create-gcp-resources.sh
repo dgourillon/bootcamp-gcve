@@ -108,27 +108,27 @@ rm private_pool_config.yaml
 
 echo "##############  Creating IAM bindings ##############"
 
-gcloud iam service-accounts create gcve-bootcamp-sa \
+gcloud -q iam service-accounts create gcve-bootcamp-sa \
     --description="gcve bootcamp build SA " \
     --display-name="gcve-bootcamp-sa"
 
-gcloud iam service-accounts add-iam-policy-binding gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com \
+gcloud -q iam service-accounts add-iam-policy-binding gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com \
 --member="serviceAccount:$CLOUD_BUILD_SA" \
 --role='roles/iam.serviceAccountUser'
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
+gcloud -q projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/viewer"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
+gcloud -q projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/vmwareengine.vmwareengineAdmin"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
+gcloud -q projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/storage.objectUser"
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
+gcloud -q projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/logging.logWriter"
 
