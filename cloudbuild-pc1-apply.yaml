@@ -22,8 +22,8 @@ steps:
     args: 
     - '-c'
     - |
-        ./set_credentials.sh "pc-1" "us-west2-a" $PROJECT_ID
-        cp ./pc-1-gcve.credentials.auto.tfvars /tfvarsvolume/
+        ./set_credentials.sh "${_PC1_NAME}" "${_PC1_LOCATION}" $PROJECT_ID
+        cp ./${_PC1_NAME}-gcve.credentials.auto.tfvars /tfvarsvolume/
     volumes:
     - name: 'tfvarsvolume'
       path: '/tfvarsvolume'
@@ -35,7 +35,7 @@ steps:
     args: 
     - '-c'
     - |
-        cp /tfvarsvolume/pc-1-gcve.credentials.auto.tfvars .
+        cp /tfvarsvolume/${_PC1_NAME}-gcve.credentials.auto.tfvars .
         sed -i "s/tfstate-gcve-bootcamp/$PROJECT_NUMBER-gcve-bootcamp/g" backend.tf 
         terraform init || exit 1
         terraform plan -out=tfplan || exit 1
