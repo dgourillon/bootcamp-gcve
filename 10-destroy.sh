@@ -44,7 +44,7 @@ gcloud -q compute routers nats delete $GCVE_NETWORK_NAME-nat \
 gcloud -q compute routers delete $GCVE_NETWORK_NAME-router \
     --region=us-central1 
 
-gcloud vmware networks delete global-ven --type STANDARD --project=$PROJECT_ID --location=global
+gcloud vmware networks delete global-ven  --project=$PROJECT_ID ÒÒ
 
 
 gcloud iam service-accounts remove-iam-policy-binding gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com \

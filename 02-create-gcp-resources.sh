@@ -2,11 +2,11 @@
 
 . ./00-variables.sh
 
-if gcloud builds connections list --region us-central1 | grep $GITHUB_CONNECTION_NAME
+if gcloud builds connections list --region us-central1 --filter="name: $GITHUB_CONNECTION_NAME" | grep '"stage": "COMPLETE"'
 then
     echo "github connection to gcve bootcamp detected"
 else
-    echo "github connection bot detected, exiting"
+    echo "github connection not detected or not finalized , exiting"
     exit 1
 fi
 
@@ -121,9 +121,28 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/logging.logWriter"
 
-# Create of the vmware engine network
+# Create of the vmware engine components
 
 gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID --location=global
+
+
+ gcloud vmware private-clouds create $PC1_NAME \
+    --location=$PC1_LOCATION-a \
+    --project=$PROJECT_ID \
+    --type=TIME_LIMITED \
+    --cluster=my-management-cluster \
+    --node-type-config=type=standard-72,count=1 \
+    --management-range=$PC1_ADMIN_RANGE \
+    --vmware-engine-network=$VEN_NAME
+
+ gcloud vmware private-clouds create $PC2_NAME \
+    --location=$PC2_LOCATION-a \
+    --project=$PROJECT_ID \
+    --type=TIME_LIMITED \
+    --cluster=my-management-cluster \
+    --node-type-config=type=standard-72,count=1 \
+    --management-range=$PC2_ADMIN_RANGE \
+    --vmware-engine-network=$VEN_NAME
 
 # Create of the cloud build triggers for the VSphere and NSXT steps
 
@@ -135,7 +154,7 @@ gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resource
 --service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
 --branch-pattern="^build_branch.*" \
---build-config="cloudbuild-pc1-apply.yaml"
+--build-config="cloudbuild-pc1-apply.yaml" \
 --substitutions=PC1_NAME="$PC1_NAME",PC1_LOCATION="$PC1_LOCATION",PC2_NAME="$PC2_NAME",PC2_LOCATION="$PC2_LOCATION"
 
 
@@ -144,7 +163,7 @@ gcloud beta builds triggers create github --name="build-vms" \
 --service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
 --branch-pattern="^build_branch.*" \
---build-config="cloudbuild-pc1-vms.yaml"
+--build-config="cloudbuild-pc1-vms.yaml" \
 --substitutions=PC1_NAME="$PC1_NAME",PC1_LOCATION="$PC1_LOCATION",PC2_NAME="$PC2_NAME",PC2_LOCATION="$PC2_LOCATION"
 
 
