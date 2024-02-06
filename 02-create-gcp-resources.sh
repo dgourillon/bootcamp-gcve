@@ -12,6 +12,8 @@ fi
 
 ## Create of the network resources 
 
+echo "##############  Creating VPC network resources ##############"
+
 gcloud compute networks create $GCVE_NETWORK_NAME \
     --subnet-mode=custom 
 
@@ -26,6 +28,8 @@ gcloud compute networks subnets create usw2-subnet \
     --range="10.128.5.128/25" \
     --region=us-west2
 
+echo "##############  Creating VPC peering to PSA ##############"
+
 gcloud compute addresses create google-managed-services-$GCVE_NETWORK_NAME \
     --global \
     --purpose=VPC_PEERING \
@@ -39,6 +43,8 @@ gcloud services vpc-peerings connect \
     --ranges=google-managed-services-$GCVE_NETWORK_NAME \
     --network=$GCVE_NETWORK_NAME \
     --project=$(gcloud config get-value project)
+
+echo "##############  Creating VPC firewall rules for bastion ##############"
 
 gcloud compute firewall-rules create $GCVE_NETWORK_NAME-allow-ingress-from-iap \
   --network=$GCVE_NETWORK_NAME \
@@ -63,6 +69,8 @@ gcloud compute firewall-rules create $GCVE_NETWORK_NAME-allow-egress \
 --description="Allow egress" \
 --direction=EGRESS
 
+echo "##############  Creating VPC NAT resources ##############"
+
 gcloud compute routers create $GCVE_NETWORK_NAME-router \
     --network=$GCVE_NETWORK_NAME \
     --region=us-central1 
@@ -75,6 +83,7 @@ gcloud compute routers nats create $GCVE_NETWORK_NAME-nat \
 
 ## Create of the cloud build related resources 
 
+echo "##############  Creating Cloud build resources ##############"
 
    gcloud builds repositories create bootcamp-gcve \
      --remote-uri=https://github.com/dgourillon/bootcamp-gcve.git \
@@ -96,6 +105,8 @@ gcloud builds worker-pools create gcve-pool \
 rm private_pool_config.yaml
 
 ## Create of the IAM and service account resources
+
+echo "##############  Creating IAM bindings ##############"
 
 gcloud iam service-accounts create gcve-bootcamp-sa \
     --description="gcve bootcamp build SA " \
@@ -123,6 +134,8 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 
 # Create of the vmware engine components
 
+echo "##############  Creating GCVE VENs and PCs ##############"
+
 gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID --location=global
 
 
@@ -147,7 +160,7 @@ gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID -
 # Create of the cloud build triggers for the VSphere and NSXT steps
 
 
-
+echo "##############  Creating the cloud build triggers for the VSphere and NSXT steps ##############"
 
 gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resources" \
 --region=us-central1 \
