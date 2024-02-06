@@ -155,7 +155,7 @@ gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resource
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
 --branch-pattern="^build_branch.*" \
 --build-config="cloudbuild-pc1-apply.yaml" \
---substitutions="PC1_NAME=$PC1_NAME,PC1_LOCATION=$PC1_LOCATION,PC2_NAME=$PC2_NAME,PC2_LOCATION=$PC2_LOCATION"
+--substitutions="PC1_NAME=$_PC1_NAME,PC1_LOCATION=$_PC1_LOCATION,PC2_NAME=$_PC2_NAME,PC2_LOCATION=$_PC2_LOCATION"
 
 
 gcloud beta builds triggers create github --name="build-vms" \
