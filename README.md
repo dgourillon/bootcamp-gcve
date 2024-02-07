@@ -34,8 +34,6 @@ Run the following command line from your cloud shell
 Wait until all the resources are created   
 It should take up to 2 hours for the GCVE private clouds to provision 
 Please wait until you see both private clouds  at the 'Active' Status 
-![alt text](images/repository_connection.png?raw=true)  
 
-Open the Repository menu of Cloud build and locate the connection you juste created :  
 ![alt text](images/pc_completed.png?raw=true)  
 
