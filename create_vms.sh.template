@@ -15,7 +15,7 @@ TEAM_COUNT=$(cat terraform.tfvars | awk '/team_count/ {print $3}')
 for current_ovf in $(gsutil ls gs://$OVF_bucket/  | awk -F '/' '{print $4}' | grep ovf |  awk -F '.' '{print $1}')
     do
         
-        
+       echo "creating $current_ovf VM" 
         gsutil cp gs://$OVF_bucket/ gs://$OVF_bucket/$current_ovf* .
         for i in $(seq 0 1 $TEAM_COUNT)
         do

@@ -162,12 +162,12 @@ gcloud vmware networks create global-ven --type STANDARD --project=$PROJECT_ID -
 
 echo "##############  Creating the cloud build triggers for the VSphere and NSXT steps ##############"
 
-gcloud beta builds triggers create github --name="build-vsphere-and-nsx-resources" \
+gcloud builds triggers create manual --name=build-vsphere-and-nsx-resources-manual \
 --region=us-central1 \
 --service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+--build-config=cloudbuild-pc1-apply.yaml \
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
---branch-pattern="^build_branch.*" \
---build-config="cloudbuild-pc1-apply.yaml" \
+--branch=main \
 --substitutions="_PC1_NAME=$PC1_NAME,_PC1_LOCATION=$PC1_ZONE,_PC2_NAME=$PC2_NAME,_PC2_LOCATION=$PC2_ZONE"
 
 
@@ -180,15 +180,13 @@ gcloud builds triggers create manual --name=build-vms-manual \
 --substitutions="_PC1_NAME=$PC1_NAME,_PC1_LOCATION=$PC1_ZONE,_PC2_NAME=$PC2_NAME,_PC2_LOCATION=$PC2_ZONE"
 
 
-
-gcloud beta builds triggers create github --name="mcdc-assessment" \
+gcloud builds triggers create manual --name=mcdc-assessment \
 --region=us-central1 \
 --service-account="projects/$PROJECT_ID/serviceAccounts/gcve-bootcamp-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+--build-config=cloudbuild-pc1-vms.yaml \
 --repository="projects/$PROJECT_ID/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve" \
---branch-pattern="^build_branch.*" \
---build-config="cloudbuild-pc1-mcdc.yaml" \
+--branch=main \
 --substitutions="_PC1_NAME=$PC1_NAME,_PC1_LOCATION=$PC1_ZONE,_PC2_NAME=$PC2_NAME,_PC2_LOCATION=$PC2_ZONE"
-
 
 
 # Create of the storage bucket for the tfstates
@@ -219,64 +217,3 @@ for i in $(seq 1 $BASTION_COUNT); do
     --network-interface=stack-type=IPV4_ONLY,subnet=usc1-subnet,no-address \
     
 done
-
-
-{
-  "protoPayload": {
-    "@type": "type.googleapis.com/google.cloud.audit.AuditLog",
-    "status": {},
-    "authenticationInfo": {
-      "principalEmail": "dgourillon@google.com",
-      "principalSubject": "user:dgourillon@google.com"
-    },
-    "requestMetadata": {
-      "callerIp": "2001:861:3cc4:a810:b1c1:19da:e15a:1b35",
-      "callerSuppliedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36,gzip(gfe),gzip(gfe)",
-      "requestAttributes": {},
-      "destinationAttributes": {}
-    },
-    "serviceName": "cloudbuild.googleapis.com",
-    "methodName": "google.devtools.cloudbuild.v1.CloudBuild.CreateBuildTrigger",
-    "authorizationInfo": [
-      {
-        "resource": "projects/network-target-3",
-        "permission": "cloudbuild.builds.create",
-        "granted": true,
-        "resourceAttributes": {}
-      }
-    ],
-    "resourceName": "projects/network-target-3/triggers",
-    "request": {
-      "trigger": {
-        "name": "build-vms-manual",
-        "sourceToBuild": {
-          "repository": "projects/network-target-3/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve",
-          "ref": "refs/heads/main"
-        },
-        "gitFileSource": {
-          "path": "cloudbuild.yaml",
-          "repository": "projects/network-target-3/locations/us-central1/connections/gcve-github-connection/repositories/bootcamp-gcve",
-          "revision": "refs/heads/main"
-        }
-      },
-      "@type": "type.googleapis.com/google.devtools.cloudbuild.v1.CreateBuildTriggerRequest",
-      "parent": "projects/network-target-3/locations/us-central1",
-      "projectId": "network-target-3"
-    }
-  },
-  "insertId": "1ulh1eocz88",
-  "resource": {
-    "type": "build",
-    "labels": {
-      "build_id": "",
-      "project_id": "network-target-3",
-      "build_trigger_id": ""
-    }
-  },
-  "timestamp": "2024-02-07T09:25:04.890352447Z",
-  "severity": "NOTICE",
-  "logName": "projects/network-target-3/logs/cloudaudit.googleapis.com%2Factivity",
-  "receiveTimestamp": "2024-02-07T09:25:04.905976269Z"
-}
-
-
