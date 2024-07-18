@@ -26,7 +26,7 @@ for current_ovf in $(gsutil ls gs://$OVF_bucket/  | awk -F '/' '{print $4}' | gr
             #cat $current_ovf.json
             sed -i 's/PowerOn": false/PowerOn": true/g' $current_ovf.json
             ls
-            govc import.ovf --options=$current_ovf.json -folder=$TEAM $current_ovf.ovf -ds=/Datacenter/datastore/vsanDatastore
+            govc import.ovf --options=$current_ovf.json -folder=$TEAM -ds=/Datacenter/datastore/vsanDatastore $current_ovf.ovf
             
         done
         rm $current_ovf*
